@@ -1,0 +1,33 @@
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  height: 70px;
+  padding: 0 16px;
+  color: white;
+  background-color: #262626;
+
+  &-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: white;
+  }
+}
+
+.active {
+  color: red;
+}
+
+.dropdown-menu {
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
