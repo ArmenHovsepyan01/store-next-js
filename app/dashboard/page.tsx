@@ -6,6 +6,7 @@ import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { useRouter } from 'next/navigation';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
+import { log } from 'node:util';
 
 interface FormValues {
   title: string;
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
+  const [images, setImages] = useState<any>();
 
   async function createProduct(values: FormValues) {
     try {
@@ -43,6 +45,19 @@ const Dashboard = () => {
       images: ''
     });
   }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target?.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImages(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    console.log(images);
+  };
 
   return (
     <main>
@@ -104,6 +119,10 @@ const Dashboard = () => {
 
           <Form.Item>
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+          </Form.Item>
+
+          <Form.Item name="main_image" label="Main Image">
+            <Input type="file" onChange={handleImageChange} />
           </Form.Item>
 
           <Form.Item>

@@ -27,11 +27,11 @@ const LoginForm = () => {
       console.log(data);
       Cookies.set('token', data.access_token);
 
-      // await dispatch(fetchUserData());
+      await dispatch(fetchUserData());
       router.replace('/dashboard');
     } catch (e: any) {
       console.error(e);
-      return `${e.response.data}`;
+      return e.response.data.error.slice(6);
     }
   }
 

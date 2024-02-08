@@ -21,13 +21,6 @@ const Register = () => {
   const { replace } = useRouter();
   async function onFinish() {
     try {
-      // const { data } = await axios.post('https://api.escuelajs.co/api/v1/users/', {
-      //   name: name,
-      //   email: email,
-      //   password: password,
-      //   avatar: 'https://picsum.photos/800'
-      // });
-
       const { data } = await axios.post('/api/register', {
         firstName: name,
         lastName: lastName,
@@ -39,7 +32,7 @@ const Register = () => {
 
       replace('/login');
     } catch (e: any) {
-      return e.response.data;
+      return e.response.data.error.slice(6);
     }
   }
 

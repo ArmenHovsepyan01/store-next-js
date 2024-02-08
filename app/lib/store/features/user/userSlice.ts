@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -6,7 +7,7 @@ export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => 
   const token = Cookies.get('token');
 
   try {
-    const response = await axios.get('https://api.escuelajs.co/api/v1/auth/profile', {
+    const response = await axios.get('/api/auth', {
       headers: {
         Authorization: `Bearer ${token}`
       }
