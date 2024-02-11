@@ -6,36 +6,37 @@ import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { useRouter } from 'next/navigation';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
-import { log } from 'node:util';
-import UploadFile from '@/app/_components/upload_file/UploadFile';
 
 interface FormValues {
   name: string;
   price: string;
   description: string;
-  category: string;
+  categoryId: string;
   images: string;
   main_image: string;
   brand: string;
 }
+
 const Dashboard = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
-  const [image, setImage] = useState<string>('');
+  const [file, setFile] = useState<File>();
+  const [files, setFiles] = useState<File[]>();
 
   async function createProduct(values: FormValues) {
     try {
       const formData = new FormData();
-      formData.append('main_image', image);
+      formData.append('main_image', file, file?.name);
       formData.append('name', values.name);
       formData.append('description', values.description);
       formData.append('price', values.price);
-      formData.append('category', values.category);
+      formData.append('categoryId', values.categoryId);
       formData.append('brand', values.brand);
-      formData.append('images', JSON.stringify([image, image, image]));
 
-      console.log(formData);
+      files?.forEach((item) => {
+        formData.append('images', item, item.name);
+      });
 
       const { data } = await axios.post('/api/product', formData, {
         headers: {
@@ -46,8 +47,6 @@ const Dashboard = () => {
       console.log(data);
 
       message.success('Product created successfully.');
-
-      console.log(values, formData);
     } catch (e: any) {
       // setErrorMessage(e.response.data.message[0]);
       throw new Error(e);
@@ -64,10 +63,6 @@ const Dashboard = () => {
     });
   }
 
-  const onImgChange = (url: string) => {
-    setImage(url);
-  };
-
   return (
     <main>
       <Flex align={'center'} justify={'space-between'} style={{ width: '100%' }}>
@@ -77,7 +72,12 @@ const Dashboard = () => {
       </Flex>
       <Divider />
       <Flex align={'center'} justify={'center'} vertical={true} gap={24}>
-        <Form layout={'vertical'} form={form} onFinish={createProduct} style={{ width: 400 }}>
+        <Form
+          layout={'vertical'}
+          form={form}
+          onFinish={createProduct}
+          style={{ width: 400 }}
+          encType="multipart/form-data">
           <Form.Item
             name="name"
             label="Name"
@@ -98,12 +98,12 @@ const Dashboard = () => {
           </Form.Item>
           <Form.Item
             name="brand"
-            label="brand"
+            label="Brand"
             rules={[{ required: true, message: 'Please fill the input.' }]}>
             <Input placeholder="Brand" />
           </Form.Item>
           <Form.Item
-            name="category"
+            name="categoryId"
             label="Categories"
             rules={[{ required: true, message: 'Please fill the input.' }]}
             initialValue={'1'}>
@@ -118,12 +118,35 @@ const Dashboard = () => {
             />
           </Form.Item>
 
-          <Form.Item>
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+          <Form.Item name="main_image" label="Main Image">
+            <input
+              type="file"
+              onChange={(e) => {
+                const inputFile = e.target.files?.[0];
+                if (inputFile) {
+                  setFile(inputFile);
+                }
+              }}
+            />
           </Form.Item>
 
-          <Form.Item name="main_image" label="Main Image">
-            <UploadFile setImage={onImgChange} />
+          <Form.Item name="images" label="Other images">
+            <input
+              type="file"
+              multiple
+              onChange={(e) => {
+                const inputFiles = e.target.files;
+
+                if (inputFiles?.length) {
+                  const images = Array.from(inputFiles);
+                  setFiles(images);
+                }
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
           </Form.Item>
 
           <Form.Item>
@@ -135,13 +158,6 @@ const Dashboard = () => {
           </Form.Item>
         </Form>
       </Flex>
-
-      <img
-        src={
-          'C:\\\\Users\\\\user\\\\WebstormProjects\\\\store\\\\server\\\\images\\\\1707495850974.webp'
-        }
-        alt={'al'}
-      />
     </main>
   );
 };

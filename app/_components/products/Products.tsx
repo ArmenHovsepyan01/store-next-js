@@ -8,6 +8,7 @@ import CustomPagination from '@/app/_components/custom-pagination/CustomPaginati
 import { getAllProducts } from '@/app/lib/data';
 import ProductsHeader from '@/app/_components/products/products-header/ProductsHeader';
 import CustomCard from '@/app/_components/custom-card/CustomCard';
+import axios from 'axios';
 
 interface ProductsProps {
   searchParams?: SearchParams;
@@ -16,6 +17,9 @@ interface ProductsProps {
 const Products: FC<ProductsProps> = async ({ searchParams }) => {
   const perPage: number = 6;
   const { data, totalPages }: IData = await getAllProducts(createParams());
+
+  // const cusData = await axios.get('http://localhost:5000/api/products');
+  // console.log(cusData.data);
 
   function createParams(): string {
     let params = '';
