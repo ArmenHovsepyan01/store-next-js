@@ -18,7 +18,7 @@ import {
 } from '@/app/lib/store/features/cart/cartSlice';
 
 const WishListItem: FC<CartItem> = ({ count, product }) => {
-  const { id, title, price, images } = product;
+  const { id, name, price, images } = product;
   const dispatch = useAppDispatch();
 
   const increaseProductCount = () => {
@@ -51,12 +51,12 @@ const WishListItem: FC<CartItem> = ({ count, product }) => {
       cover={
         <Image
           alt="example"
-          src={images[0]}
+          src={`${process.env.NEXT_PUBLIC_API_URL}${product.main_image}`}
           fallback={'https://miro.medium.com/v2/resize:fit:1358/1*ylV603DJXpTpBsiGm4BcAQ.png'}
           preview={false}
         />
       }>
-      <Meta title={title} description={`${totalPrice} $`} />
+      <Meta title={name} description={`${totalPrice} $`} />
     </Card>
   );
 };

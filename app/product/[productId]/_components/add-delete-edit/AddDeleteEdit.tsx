@@ -6,7 +6,7 @@ import AddToCart from '@/app/product/[productId]/_components/add-to-cart/AddToCa
 import EditModal from '@/app/product/[productId]/_components/add-delete-edit/edit-modal/EditModal';
 
 import { Button, Flex } from 'antd';
-import { Product } from '@/app/lib/definitions';
+import { IProduct, Product } from '@/app/lib/definitions';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
@@ -15,7 +15,7 @@ import { removeFromCart } from '@/app/lib/store/features/cart/cartSlice';
 import axios from 'axios';
 
 interface AddDeleteEditProps {
-  product: Product;
+  product: IProduct;
 }
 const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
   const router = useRouter();
@@ -25,7 +25,9 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
 
   const deleteProduct = async () => {
     try {
-      const { data } = await axios.delete(`https://api.escuelajs.co/api/v1/products/${product.id}`);
+      const { data } = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${product.id}`
+      );
       dispatch(removeFromCart({ id: product.id }));
       router.replace('/');
       router.refresh();

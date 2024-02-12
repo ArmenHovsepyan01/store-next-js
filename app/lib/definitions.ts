@@ -33,7 +33,7 @@ export interface SearchParams {
 
 export interface CartItem {
   count: number;
-  product: Product;
+  product: IProduct;
 }
 
 export interface User {
@@ -45,4 +45,36 @@ export interface User {
   avatar: string;
   creationAt: string;
   updatedAt: string;
+}
+
+export interface FormValues {
+  name: string;
+  price: string;
+  description: string;
+  categoryId: string;
+  main_image: File;
+  brand: string;
+  color: string;
+  images: File[];
+  sizes: string[];
+}
+
+export interface IProduct {
+  id: number;
+  name: string;
+  description: string;
+  brand: string;
+  price: number;
+  isPublished: boolean;
+  category: string;
+  main_image: string;
+  images: ImagesArrayItem[];
+  colors?: string;
+  sizes?: string[];
+}
+
+interface ImagesArrayItem {
+  id: number;
+  imageUrl: string;
+  productId: number;
 }

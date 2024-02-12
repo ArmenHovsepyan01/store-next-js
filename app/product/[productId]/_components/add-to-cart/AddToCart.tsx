@@ -3,11 +3,11 @@
 import { FC } from 'react';
 import { Button, message } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { Product } from '@/app/lib/definitions';
+import { IProduct, Product } from '@/app/lib/definitions';
 import { addToCart } from '@/app/lib/store/features/cart/cartSlice';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 interface AddToCartProps {
-  product: Product;
+  product: IProduct;
 }
 
 interface CartItem {

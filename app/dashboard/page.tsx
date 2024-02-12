@@ -2,20 +2,14 @@
 
 import React, { useState } from 'react';
 import { Button, Divider, Flex, Form, Input, message, Select } from 'antd';
-import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { useRouter } from 'next/navigation';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
-
-interface FormValues {
-  name: string;
-  price: string;
-  description: string;
-  categoryId: string;
-  images: string;
-  main_image: string;
-  brand: string;
-}
+import SizeSelector from '@/app/dashboard/_components/SizeSelector';
+import CustomColorPicker from '@/app/dashboard/_components/cutom-color-picker/CustomColorPicker';
+import { FormValues } from '@/app/lib/definitions';
+import { appendFormData } from '@/app/helpers/appendFormData';
+import axios from 'axios';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -23,20 +17,20 @@ const Dashboard = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [file, setFile] = useState<File>();
   const [files, setFiles] = useState<File[]>();
+  const [color, setColor] = useState<string>('#000000');
+  const [sizes, setSizes] = useState<string[]>([]);
 
   async function createProduct(values: FormValues) {
     try {
-      const formData = new FormData();
-      formData.append('main_image', file, file?.name);
-      formData.append('name', values.name);
-      formData.append('description', values.description);
-      formData.append('price', values.price);
-      formData.append('categoryId', values.categoryId);
-      formData.append('brand', values.brand);
+      const formvalues: FormValues = {
+        ...values,
+        main_image: file!,
+        images: files!,
+        color: color,
+        sizes: sizes
+      };
 
-      files?.forEach((item) => {
-        formData.append('images', item, item.name);
-      });
+      const formData = appendFormData(formvalues);
 
       const { data } = await axios.post('/api/product', formData, {
         headers: {
@@ -47,11 +41,17 @@ const Dashboard = () => {
       console.log(data);
 
       message.success('Product created successfully.');
+
+      console.log(values);
     } catch (e: any) {
       // setErrorMessage(e.response.data.message[0]);
       throw new Error(e);
     }
   }
+
+  const getColor = (color: string) => {
+    return color;
+  };
 
   function clearFormValues() {
     form.setFieldsValue({
@@ -63,6 +63,11 @@ const Dashboard = () => {
     });
   }
 
+  const handleSizesChange = (sizes: string[]) => {
+    setSizes(sizes);
+  };
+
+  console.log(color);
   return (
     <main>
       <Flex align={'center'} justify={'space-between'} style={{ width: '100%' }}>
@@ -116,6 +121,14 @@ const Dashboard = () => {
                 { value: '5', label: 'Miscellaneous' }
               ]}
             />
+          </Form.Item>
+
+          <Form.Item name="sizes" label="Choose sizes.">
+            <SizeSelector setSizes={handleSizesChange} />
+          </Form.Item>
+
+          <Form.Item name="color" label={'Choose color'}>
+            <CustomColorPicker color={color} setColor={setColor} />
           </Form.Item>
 
           <Form.Item name="main_image" label="Main Image">

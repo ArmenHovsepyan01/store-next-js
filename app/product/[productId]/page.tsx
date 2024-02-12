@@ -5,7 +5,7 @@ import './style.scss';
 import React, { FC, useEffect, useState } from 'react';
 
 import { getProductById } from '@/app/lib/data';
-import { Product } from '@/app/lib/definitions';
+import { IProduct } from '@/app/lib/definitions';
 
 import { Flex } from 'antd';
 import PreviewGroup from 'antd/lib/image/PreviewGroup';
@@ -32,7 +32,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
   useEffect(() => {
     (async function () {
       try {
-        const data: Product = await getProductById(productId);
+        const data: IProduct = await getProductById(productId);
         dispatch(setProduct({ product: data }));
         setLoading(true);
       } catch (e) {
@@ -52,7 +52,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
                 <Flex vertical={true} align={'center'} justify={'center'} gap={24}>
                   <AntImage
                     alt="example"
-                    src={product?.images?.[0]}
+                    src={`${process.env.NEXT_PUBLIC_API_URL + product.main_image}`}
                     width={400}
                     height={400}
                     fallback={
@@ -63,7 +63,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
                     {product?.images?.map((item, i) => (
                       <AntImage
                         alt="example"
-                        src={item}
+                        src={`${process.env.NEXT_PUBLIC_API_URL + item.imageUrl}`}
                         width={100}
                         height={100}
                         key={i}
@@ -78,7 +78,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
             </Flex>
           </div>
           <Flex gap={24} vertical={true} className="product">
-            <h2 className="product-title">{product.title}</h2>
+            <h2 className="product-title">{product.name}</h2>
             <span className="product-price">{product.price} &#36;</span>
             <p>{product.description}</p>
             <AddDeleteEdit product={product} />

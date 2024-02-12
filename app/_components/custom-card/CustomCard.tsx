@@ -6,18 +6,18 @@ import Card from 'antd/lib/card/Card';
 import Image from 'next/image';
 import Meta from 'antd/lib/card/Meta';
 import { HeartFilled } from '@ant-design/icons';
-import { CartItem, Product } from '@/app/lib/definitions';
+import { CartItem, IProduct, Product } from '@/app/lib/definitions';
 import styles from '../../styles/CustomCard.module.scss';
 import { useAppDispatch } from '@/app/lib/store/hooks';
 import { addToCart, removeFromCart } from '@/app/lib/store/features/cart/cartSlice';
 
 interface CustomCardProps {
-  product: Product;
+  product: IProduct;
 }
 
 const CustomCard: FC<CustomCardProps> = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const [src, setSrc] = useState(product.images[0]);
+  const [src, setSrc] = useState(product.main_image);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
   }, []);
 
   const addProductToCart = () => {
-    if (!isFavorite) {
-      dispatch(addToCart({ product: product }));
-    } else {
-      dispatch(removeFromCart({ id: product.id }));
-    }
+    // if (!isFavorite) {
+    //   dispatch(addToCart({ product: product }));
+    // } else {
+    //   dispatch(removeFromCart({ id: product.id }));
+    // }
 
     setIsFavorite((prev) => !prev);
   };
@@ -57,7 +57,7 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
           cover={
             <Image
               alt="example"
-              src={src}
+              src={`api${product.main_image}`}
               width={280}
               height={300}
               quality={100}
@@ -67,7 +67,7 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
               }}
             />
           }>
-          <Meta title={product.title} />
+          <Meta title={product.name} />
         </Card>
       </Link>
     </div>

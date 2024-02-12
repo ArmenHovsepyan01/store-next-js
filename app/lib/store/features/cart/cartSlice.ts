@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
-import { CartItem, Product } from '@/app/lib/definitions';
+import { CartItem, IProduct, Product } from '@/app/lib/definitions';
 import { startServer } from 'next/dist/server/lib/start-server';
 
 interface Cart {
@@ -8,7 +8,7 @@ interface Cart {
 }
 
 interface CartProduct {
-  product: Product;
+  product: IProduct;
 }
 interface ProductID {
   id: number;

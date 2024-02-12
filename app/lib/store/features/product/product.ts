@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product } from '@/app/lib/definitions';
+import { IProduct, Product } from '@/app/lib/definitions';
 
 interface IState {
-  product: Product;
+  product: IProduct;
 }
 
 const initialState: IState = {
-  product: {} as Product
+  product: {} as IProduct
 };
 
 const productSlice = createSlice({

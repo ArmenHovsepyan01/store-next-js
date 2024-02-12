@@ -1,4 +1,4 @@
-import { IData, SearchParams } from '@/app/lib/definitions';
+import { IData, IProduct, SearchParams } from '@/app/lib/definitions';
 
 import { FC } from 'react';
 
@@ -9,6 +9,7 @@ import { getAllProducts } from '@/app/lib/data';
 import ProductsHeader from '@/app/_components/products/products-header/ProductsHeader';
 import CustomCard from '@/app/_components/custom-card/CustomCard';
 import axios from 'axios';
+import { AppleWebAppMeta } from 'next/dist/lib/metadata/generate/basic';
 
 interface ProductsProps {
   searchParams?: SearchParams;
@@ -16,10 +17,9 @@ interface ProductsProps {
 
 const Products: FC<ProductsProps> = async ({ searchParams }) => {
   const perPage: number = 6;
-  const { data, totalPages }: IData = await getAllProducts(createParams());
+  const productsData = await getAllProducts(createParams());
 
-  // const cusData = await axios.get('http://localhost:5000/api/products');
-  // console.log(cusData.data);
+  // const { data } = await axios.get('http://localhost:5000/api/products');
 
   function createParams(): string {
     let params = '';
@@ -27,12 +27,12 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
       const keys = Object.keys(searchParams);
 
       keys.forEach((item, i) => {
-        if (item !== 'page') {
+        if (i === 0) {
+          params += `${item}=${searchParams[item as keyof SearchParams]}`;
+        } else {
           params += `&${item}=${searchParams[item as keyof SearchParams]}`;
         }
       });
-
-      params += `&offset=${searchParams.page && !searchParams.title ? (+searchParams.page - 1) * perPage : '0'}&limit=6`;
     }
 
     return params;
@@ -43,15 +43,15 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
       <ProductsHeader />
       <Divider />
       <Flex gap={24} wrap="wrap" align="center" justify="space-between" style={{ padding: 24 }}>
-        {data.length !== 0 ? (
-          data?.map((item) => {
+        {productsData.length !== 0 ? (
+          productsData?.map((item) => {
             return <CustomCard product={item} key={item.id} />;
           })
         ) : (
           <div>There is nothing.</div>
         )}
       </Flex>
-      <CustomPagination total={totalPages} />
+      {/*<CustomPagination total={totalPages} />*/}
     </>
   );
 };

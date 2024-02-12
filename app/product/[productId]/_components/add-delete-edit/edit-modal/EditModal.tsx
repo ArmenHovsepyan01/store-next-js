@@ -9,8 +9,10 @@ import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { editCartProduct } from '@/app/lib/store/features/cart/cartSlice';
 import { setProduct } from '@/app/lib/store/features/product/product';
 
+import { usePathname, useRouter } from 'next/navigation';
+
 interface FormValues {
-  title: string;
+  name: string;
   description: string;
   price: string;
 }
@@ -20,25 +22,28 @@ interface EditModalProps {
 }
 
 const EditModal: FC<EditModalProps> = ({ closeModal }) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [form] = Form.useForm<FormValues>();
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.product.product);
 
   form.setFieldsValue({
-    title: product.title || '',
+    name: product.name || '',
     description: product.description || '',
     price: product.price.toString() || ''
   });
   const editProduct = async (values: FormValues) => {
     try {
       const { data } = await axios.put(
-        `https://api.escuelajs.co/api/v1/products/${product.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${product.id}`,
         values
       );
 
-      dispatch(setProduct({ product: data }));
-      dispatch(editCartProduct({ product: data }));
-
+      //
+      // dispatch(setProduct({ product: data }));
+      // dispatch(editCartProduct({ product: data }));
+      window.location.reload();
       closeModal();
     } catch (e) {
       console.error(e);
@@ -50,8 +55,8 @@ const EditModal: FC<EditModalProps> = ({ closeModal }) => {
       <h3>Edit Product</h3>
       <Form layout={'vertical'} form={form} onFinish={editProduct}>
         <Form.Item
-          name="title"
-          label="Title"
+          name="name"
+          label="Name"
           rules={[{ required: true, message: 'Please fill the input.' }]}>
           <Input placeholder="Title" />
         </Form.Item>

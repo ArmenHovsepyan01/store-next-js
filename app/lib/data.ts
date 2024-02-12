@@ -1,23 +1,16 @@
 import axios from 'axios';
-import { IData } from '@/app/lib/definitions';
+import { IData, IProduct } from '@/app/lib/definitions';
 
 export async function getAllProducts(query?: string) {
-  let url = `https://api.escuelajs.co/api/v1/products?offset=0&limit=6`;
-  let allDataUrl = `https://api.escuelajs.co/api/v1/products`;
+  let url = `${process.env.NEXT_PUBLIC_API_URL}/products`;
 
   if (query) {
-    url = `https://api.escuelajs.co/api/v1/products/?${query}`;
-    allDataUrl = `${allDataUrl}?${query?.slice(0, query?.lastIndexOf('&offset'))}`;
+    url = `${url}?${query}`;
   }
 
   try {
-    const [filteredData, allData] = await Promise.all([axios.get(url), axios.get(allDataUrl)]);
-    const data: IData = {
-      data: filteredData.data,
-      totalPages: allData.data.length
-    };
-
-    return data;
+    const { data } = await axios.get(url);
+    return data.product as IProduct[];
   } catch (e: any) {
     throw new Error(e.message);
   }
@@ -25,8 +18,8 @@ export async function getAllProducts(query?: string) {
 
 export async function getProductById(id: string) {
   try {
-    const { data } = await axios.get(`https://api.escuelajs.co/api/v1/products/${id}`);
-    return data;
+    const { data } = await axios.get(`http://localhost:5000/api/product/${id}`);
+    return data.product;
   } catch (e: any) {
     console.error(e.message);
   }

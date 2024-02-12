@@ -103,7 +103,6 @@ const FilterSideBar: FC<FilterSideBarProps> = ({ closeFilterSidebar, isOpen }) =
             onClick={(info) => {
               const params = new URLSearchParams(searchParams);
               params.set('categoryId', info.key);
-              params.set('page', '1');
               replace(`${pathname}?${params.toString()}`);
               closeFilterSidebar();
             }}
