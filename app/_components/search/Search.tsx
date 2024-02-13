@@ -15,11 +15,11 @@ const Search = () => {
     const params = new URLSearchParams(searchParams);
 
     if (value) {
-      params.set('title', value);
+      params.set('name', value);
       params.delete('page');
       console.log(params.toString());
     } else {
-      params.delete('title');
+      params.delete('name');
     }
 
     if (pathname.includes('product') || pathname.includes('wishlist'))

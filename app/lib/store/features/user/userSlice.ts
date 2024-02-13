@@ -2,9 +2,11 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { cookies } from 'next/headers';
 
 export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => {
   const token = Cookies.get('token');
+  console.log(token, 'redux');
 
   try {
     const response = await axios.get('/api/auth', {

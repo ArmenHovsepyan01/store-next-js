@@ -24,7 +24,6 @@ const UserAvatar = () => {
     replace('/login');
   };
 
-  console.log(user);
   const logoutUser = () => {
     Cookies.remove('token');
     dispatch(
@@ -35,6 +34,7 @@ const UserAvatar = () => {
     );
 
     replace('/');
+    window.location.reload();
   };
 
   return (

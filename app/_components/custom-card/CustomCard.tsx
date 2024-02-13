@@ -34,11 +34,11 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
   }, []);
 
   const addProductToCart = () => {
-    // if (!isFavorite) {
-    //   dispatch(addToCart({ product: product }));
-    // } else {
-    //   dispatch(removeFromCart({ id: product.id }));
-    // }
+    if (!isFavorite) {
+      dispatch(addToCart({ product: product }));
+    } else {
+      dispatch(removeFromCart({ id: product.id }));
+    }
 
     setIsFavorite((prev) => !prev);
   };

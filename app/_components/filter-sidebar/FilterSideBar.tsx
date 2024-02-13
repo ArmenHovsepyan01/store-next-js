@@ -6,6 +6,8 @@ import { Button, Divider, Drawer, Flex, Menu, type MenuProps, Space } from 'antd
 import { CloseOutlined, MailOutlined } from '@ant-design/icons';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import FilterByPrice from '../filter-by-price/FilterByPrice';
+import FilterByBrand from '@/app/_components/filter-sidebar/filter-by-brand/FilterByBrand';
+import FilterBySize from '@/app/_components/filter-sidebar/filter-by-size/FilterBySize';
 
 interface FilterSideBarProps {
   closeFilterSidebar: () => void;
@@ -110,6 +112,8 @@ const FilterSideBar: FC<FilterSideBarProps> = ({ closeFilterSidebar, isOpen }) =
         </Flex>
         <Divider />
         <FilterByPrice closeFilterSideBar={closeFilterSidebar} />
+        <FilterByBrand closeFilterSideBar={closeFilterSidebar} />
+        <FilterBySize closeFilterSideBar={closeFilterSidebar} />
       </Flex>
     </Drawer>
   );

@@ -3,13 +3,15 @@ import userReducer from './features/user/userSlice';
 import cartReducer from './features/cart/cartSlice';
 import productReducer from './features/product/product';
 import productsReducer from './features/products/productsSlice';
+import productsCategoriesReducer from './features/product-sizes/productSizesSlice';
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
       cart: cartReducer,
       product: productReducer,
-      data: productsReducer
+      data: productsReducer,
+      productCategories: productsCategoriesReducer
     }
   });
 };

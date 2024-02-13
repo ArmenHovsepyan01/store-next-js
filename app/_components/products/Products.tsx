@@ -4,12 +4,10 @@ import { FC } from 'react';
 
 import { Divider, Flex } from 'antd';
 
-import CustomPagination from '@/app/_components/custom-pagination/CustomPagination';
 import { getAllProducts } from '@/app/lib/data';
 import ProductsHeader from '@/app/_components/products/products-header/ProductsHeader';
 import CustomCard from '@/app/_components/custom-card/CustomCard';
-import axios from 'axios';
-import { AppleWebAppMeta } from 'next/dist/lib/metadata/generate/basic';
+import { cookies } from 'next/headers';
 
 interface ProductsProps {
   searchParams?: SearchParams;
@@ -17,9 +15,10 @@ interface ProductsProps {
 
 const Products: FC<ProductsProps> = async ({ searchParams }) => {
   const perPage: number = 6;
-  const productsData = await getAllProducts(createParams());
+  const cookiesStore = cookies();
+  const token = cookiesStore.get('token');
 
-  // const { data } = await axios.get('http://localhost:5000/api/products');
+  const productsData = await getAllProducts(createParams(), token?.value);
 
   function createParams(): string {
     let params = '';

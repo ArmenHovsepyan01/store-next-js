@@ -1,15 +1,20 @@
 import axios from 'axios';
-import { IData, IProduct } from '@/app/lib/definitions';
+import { IProduct } from '@/app/lib/definitions';
 
-export async function getAllProducts(query?: string) {
+export async function getAllProducts(query?: string, token?: string) {
   let url = `${process.env.NEXT_PUBLIC_API_URL}/products`;
+  console.log(token);
 
   if (query) {
     url = `${url}?${query}`;
   }
 
   try {
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return data.product as IProduct[];
   } catch (e: any) {
     throw new Error(e.message);
