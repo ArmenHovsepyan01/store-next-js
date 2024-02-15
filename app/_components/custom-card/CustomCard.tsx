@@ -17,7 +17,7 @@ interface CustomCardProps {
 
 const CustomCard: FC<CustomCardProps> = ({ product }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const [src, setSrc] = useState(product.main_image);
+  const [src, setSrc] = useState(product.main_img);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
           cover={
             <Image
               alt="example"
-              src={`api${product.main_image}`}
+              src={`api/${product.main_img}`}
               width={280}
               height={300}
               quality={100}

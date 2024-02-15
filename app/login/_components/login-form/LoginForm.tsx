@@ -19,7 +19,7 @@ const LoginForm = () => {
   const dispatch = useAppDispatch();
   async function onFinish() {
     try {
-      const { data } = await axios.post('api/login', {
+      const { data } = await axios.post('api/users/login', {
         email: email,
         password: password
       });

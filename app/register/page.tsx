@@ -21,7 +21,7 @@ const Register = () => {
   const { replace } = useRouter();
   async function onFinish() {
     try {
-      const { data } = await axios.post('/api/register', {
+      const { data } = await axios.post('api/users/register', {
         firstName: name,
         lastName: lastName,
         email: email,

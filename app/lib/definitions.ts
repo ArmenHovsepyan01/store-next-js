@@ -67,7 +67,7 @@ export interface IProduct {
   price: number;
   isPublished: boolean;
   category: string;
-  main_image: string;
+  main_img: string;
   images: ImagesArrayItem[];
   colors?: string;
   sizes?: string[];
