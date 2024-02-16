@@ -1,36 +1,37 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Divider, Flex, Form, Input, message, Select } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 import { useRouter } from 'next/navigation';
+import { Button, Divider, Flex, Form, Input, message, UploadFile } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
-import SizeSelector from '@/app/dashboard/_components/SizeSelector';
-import CustomColorPicker from '@/app/dashboard/_components/cutom-color-picker/CustomColorPicker';
 import { FormValues } from '@/app/lib/definitions';
 import { appendFormData } from '@/app/helpers/appendFormData';
 import axios from 'axios';
+import Upload from '@/app/dashboard/_components/upload/Upload';
+import { UploadChangeParam } from 'antd/es/upload';
+import Categories from '@/app/dashboard/_components/categories/Categories';
+import Sizes from '@/app/dashboard/_components/sizes/Sizes';
+import Colors from '@/app/dashboard/_components/colors/Colors';
 
 const Dashboard = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
-  const [file, setFile] = useState<File>();
-  const [files, setFiles] = useState<File[]>();
-  const [color, setColor] = useState<string>('#000000');
-  const [sizes, setSizes] = useState<string[]>([]);
+  const [files, setFiles] = useState<any>();
+  const [file, setFile] = useState<UploadFile | null>();
 
   async function createProduct(values: FormValues) {
     try {
-      const formvalues: FormValues = {
+      const formValues: FormValues = {
         ...values,
         main_image: file!,
-        images: files!,
-        color: color,
-        sizes: sizes
+        images: files!
       };
 
-      const formData = appendFormData(formvalues);
+      const formData = appendFormData(formValues);
+
+      console.log(formValues, '-=-');
 
       const { data } = await axios.post('/api/product', formData, {
         headers: {
@@ -44,13 +45,38 @@ const Dashboard = () => {
 
       console.log(values);
     } catch (e: any) {
-      // setErrorMessage(e.response.data.message[0]);
-      throw new Error(e);
+      console.log(e);
+      setErrorMessage(e.message);
     }
   }
 
-  const getColor = (color: string) => {
-    return color;
+  const handleMainImageChanges = (e: UploadChangeParam<UploadFile<any>>) => {
+    const inputFile = e.file.originFileObj;
+    if (!file) {
+      if (inputFile) {
+        setFile(inputFile);
+      }
+    }
+  };
+
+  const handleOtherImageChanges = (e: UploadChangeParam<UploadFile<any>>) => {
+    const inputFiles = e.fileList;
+
+    if (inputFiles?.length) {
+      const images = Array.from(inputFiles.map((file) => file.originFileObj));
+      console.log(images);
+      setFiles(images);
+    }
+  };
+
+  const removeMainImage = (e: UploadFile<any>) => {
+    setFile(null);
+  };
+
+  const removeImagesFromFiles = (e: UploadFile<any>) => {
+    setFiles((prev: any[]) => {
+      return prev.filter((file: any) => file.uid !== e?.originFileObj?.uid);
+    });
   };
 
   function clearFormValues() {
@@ -63,11 +89,6 @@ const Dashboard = () => {
     });
   }
 
-  const handleSizesChange = (sizes: string[]) => {
-    setSizes(sizes);
-  };
-
-  console.log(color);
   return (
     <main>
       <Flex align={'center'} justify={'space-between'} style={{ width: '100%' }}>
@@ -107,54 +128,24 @@ const Dashboard = () => {
             rules={[{ required: true, message: 'Please fill the input.' }]}>
             <Input placeholder="Brand" />
           </Form.Item>
-          <Form.Item
-            name="categoryId"
-            label="Categories"
-            rules={[{ required: true, message: 'Please fill the input.' }]}
-            initialValue={'1'}>
-            <Select
-              options={[
-                { value: '1', label: 'Clothes' },
-                { value: '2', label: 'Electronics' },
-                { value: '3', label: 'Furniture' },
-                { value: '4', label: 'Shoes' },
-                { value: '5', label: 'Miscellaneous' }
-              ]}
-            />
-          </Form.Item>
 
-          <Form.Item name="sizes" label="Choose sizes.">
-            <SizeSelector setSizes={handleSizesChange} />
-          </Form.Item>
+          <Categories />
 
-          <Form.Item name="color" label={'Choose color'}>
-            <CustomColorPicker color={color} setColor={setColor} />
-          </Form.Item>
+          <Sizes />
 
-          <Form.Item name="main_image" label="Main Image">
-            <input
-              type="file"
-              onChange={(e) => {
-                const inputFile = e.target.files?.[0];
-                if (inputFile) {
-                  setFile(inputFile);
-                }
-              }}
+          <Colors />
+
+          <Form.Item label="Main image">
+            <Upload
+              handleUploadChanges={handleMainImageChanges}
+              removeFromFilesList={removeMainImage}
             />
           </Form.Item>
 
           <Form.Item name="images" label="Other images">
-            <input
-              type="file"
-              multiple
-              onChange={(e) => {
-                const inputFiles = e.target.files;
-
-                if (inputFiles?.length) {
-                  const images = Array.from(inputFiles);
-                  setFiles(images);
-                }
-              }}
+            <Upload
+              handleUploadChanges={handleOtherImageChanges}
+              removeFromFilesList={removeImagesFromFiles}
             />
           </Form.Item>
 

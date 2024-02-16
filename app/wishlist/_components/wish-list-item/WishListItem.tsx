@@ -51,7 +51,7 @@ const WishListItem: FC<CartItem> = ({ count, product }) => {
       cover={
         <Image
           alt="example"
-          src={`${process.env.NEXT_PUBLIC_API_URL}${product.main_image}`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/${product.main_img}`}
           fallback={'https://miro.medium.com/v2/resize:fit:1358/1*ylV603DJXpTpBsiGm4BcAQ.png'}
           preview={false}
         />

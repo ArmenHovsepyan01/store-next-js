@@ -3,7 +3,10 @@ import userReducer from './features/user/userSlice';
 import cartReducer from './features/cart/cartSlice';
 import productReducer from './features/product/product';
 import productsReducer from './features/products/productsSlice';
-import productsCategoriesReducer from './features/product-sizes/productSizesSlice';
+import productsCategoriesReducer from './features/product-categories/productCategoriesSlice';
+import productColorsReducer from './features/product-colors/productColorsSlice';
+import productSizesReducer from './features/product-sizes/productSizesSlice';
+
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -11,7 +14,9 @@ export const makeStore = () => {
       cart: cartReducer,
       product: productReducer,
       data: productsReducer,
-      productCategories: productsCategoriesReducer
+      productCategories: productsCategoriesReducer,
+      productColors: productColorsReducer,
+      productSizes: productSizesReducer
     }
   });
 };

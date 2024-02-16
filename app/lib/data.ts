@@ -3,7 +3,6 @@ import { IProduct } from '@/app/lib/definitions';
 
 export async function getAllProducts(query?: string, token?: string) {
   let url = `${process.env.NEXT_PUBLIC_API_URL}/products`;
-  console.log(token);
 
   if (query) {
     url = `${url}?${query}`;
@@ -17,6 +16,7 @@ export async function getAllProducts(query?: string, token?: string) {
     });
     return data.product as IProduct[];
   } catch (e: any) {
+    console.log(e);
     throw new Error(e.message);
   }
 }

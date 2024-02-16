@@ -1,3 +1,5 @@
+import { UploadFile } from 'antd';
+
 export interface Category {
   id: number;
   name: string;
@@ -51,12 +53,12 @@ export interface FormValues {
   name: string;
   price: string;
   description: string;
-  categoryId: string;
-  main_image: File;
+  categoryId: string | number;
+  main_image: UploadFile;
   brand: string;
-  color: string;
+  color: string | number;
   images: File[];
-  sizes: string[];
+  sizes: string | number;
 }
 
 export interface IProduct {
@@ -75,6 +77,6 @@ export interface IProduct {
 
 interface ImagesArrayItem {
   id: number;
-  imageUrl: string;
+  image_url: string;
   productId: number;
 }

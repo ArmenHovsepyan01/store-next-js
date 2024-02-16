@@ -1,41 +1,53 @@
 'use client';
 
-import React, { FC, useState } from 'react';
-import { useAppSelector } from '@/app/lib/store/hooks';
+import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { Button, Flex, Select, Space } from 'antd';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { fetchProductSizes } from '@/app/lib/store/features/product-sizes/productSizesSlice';
 
 interface FilterBySizeProps {
   closeFilterSideBar: () => void;
 }
 
 const FilterBySize: FC<FilterBySizeProps> = ({ closeFilterSideBar }) => {
-  const sizes = useAppSelector((state) => state.productCategories.sizes);
+  const sizes: any = useAppSelector((state) => state.productSizes.sizes);
   const [size, setSize] = useState<number[]>([]);
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
 
-  const selectOptions = sizes.map((size, index) => {
-    return {
-      label: size,
-      value: index
-    };
-  });
+  useEffect(() => {
+    (async () => {
+      await dispatch(fetchProductSizes());
+    })();
+  }, []);
+
+  const sizeOptions = useMemo(() => {
+    return sizes.map((item: any) => {
+      return {
+        label: item.size,
+        value: item.id
+      };
+    });
+  }, [sizes]);
 
   const setSizes = () => {
     const params = new URLSearchParams(searchParams);
     let query = '';
     size.forEach((item, index) => {
       if (index === 0) {
-        query += `${sizes[item]}`;
+        query += `${sizes[item - 1].size}`;
       } else {
-        query += `&${sizes[item]}`;
+        query += `&${sizes[item - 1].size}`;
       }
     });
 
     params.set('sizes', query);
+
+    console.log(query);
 
     if (query.trim()) router.replace(`${pathname}?${params.toString()}`);
 
@@ -43,6 +55,7 @@ const FilterBySize: FC<FilterBySizeProps> = ({ closeFilterSideBar }) => {
   };
 
   const handleSizeChanges = (values: number[]) => {
+    console.log(values);
     setSize(values);
   };
 
@@ -52,7 +65,7 @@ const FilterBySize: FC<FilterBySizeProps> = ({ closeFilterSideBar }) => {
       <Space>
         <Select
           mode={'multiple'}
-          options={selectOptions}
+          options={sizeOptions}
           style={{ width: 190 }}
           placeholder={'Please choose size'}
           onChange={handleSizeChanges}

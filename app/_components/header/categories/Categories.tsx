@@ -6,6 +6,8 @@ import { categoryMenu } from '@/app/lib/dropdownMenus';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import styles from '../../../styles/Categories.module.scss';
+import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+import { fetchProductCategories } from '../../../lib/store/features/product-categories/productCategoriesSlice';
 
 interface MenuItem {
   key: string;
@@ -19,6 +21,14 @@ const Categories = () => {
 
   const [category, setCategory] = useState<number | string>('0');
   const params = new URLSearchParams(searchParams);
+  const categories = useAppSelector((state) => state.productCategories.categories);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    (async function () {
+      await dispatch(fetchProductCategories());
+    })();
+  }, [dispatch]);
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -30,24 +40,27 @@ const Categories = () => {
       }
     }
   }, [params]);
-  const onCategoryClick = (key: string) => {
-    const category: MenuItem = categoryMenu?.[+key - 1];
-    message.info(`You select ${category?.label}`);
+
+  const onCategoryClick = (key: number) => {
+    const category: any = categories?.[key - 1];
+    message.info(`You select ${category?.category}`);
 
     if (pathname.includes('product') || pathname.includes('wishlist'))
       return replace(`/?categoryId=${key}`);
     replace(`${pathname}?categoryId=${key}`);
   };
 
+  console.log(categories);
+
   return (
     <Flex gap={24} style={{ height: '100%' }} align={'center'}>
-      {categoryMenu?.map((item) => {
+      {categories?.map((item) => {
         return (
           <div
-            key={item.key}
-            className={`${styles.category} ${item.key === category ? styles.active : ''}`}
-            onClick={() => onCategoryClick(item.key)}>
-            {item.label}
+            key={item.id}
+            className={`${styles.category} ${item.id === +category ? styles.active : ''}`}
+            onClick={() => onCategoryClick(item.id)}>
+            {item.category}
           </div>
         );
       })}

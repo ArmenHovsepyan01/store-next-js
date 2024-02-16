@@ -15,7 +15,6 @@ import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
 
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { setProduct } from '@/app/lib/store/features/product/product';
-// import Image from 'next/image';
 import { Image as AntImage } from 'antd';
 import Loading from '@/app/product/[productId]/loading';
 
@@ -24,6 +23,7 @@ interface ProductById {
     productId: string;
   };
 }
+
 const ProductById: FC<ProductById> = ({ params: { productId } }) => {
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.product.product);
@@ -41,6 +41,8 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
     })();
   }, [dispatch, productId]);
 
+  console.log(true);
+
   return (
     <main>
       {loading ? (
@@ -52,7 +54,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
                 <Flex vertical={true} align={'center'} justify={'center'} gap={24}>
                   <AntImage
                     alt="example"
-                    src={`${process.env.NEXT_PUBLIC_API_URL + product.main_image}`}
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${product.main_img}`}
                     width={400}
                     height={400}
                     fallback={
@@ -63,7 +65,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
                     {product?.images?.map((item, i) => (
                       <AntImage
                         alt="example"
-                        src={`${process.env.NEXT_PUBLIC_API_URL + item.imageUrl}`}
+                        src={`${process.env.NEXT_PUBLIC_API_URL}/${item.image_url}`}
                         width={100}
                         height={100}
                         key={i}

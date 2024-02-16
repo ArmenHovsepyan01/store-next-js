@@ -9,7 +9,7 @@ export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => 
   console.log(token, 'redux');
 
   try {
-    const response = await axios.get('/api/auth', {
+    const response = await axios.get('/api/users/auth', {
       headers: {
         Authorization: `Bearer ${token}`
       }
