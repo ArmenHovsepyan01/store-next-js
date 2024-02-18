@@ -4,8 +4,9 @@ import { Flex, Space } from 'antd';
 import Search from '@/app/_components/search/Search';
 import Link from 'next/link';
 import UserAvatar from '@/app/_components/header/user-avatar/UserAvatar';
-import CartBadge from '@/app/_components/header/cart-badge/CartBadge';
+import Favorites from '@/app/_components/header/favorites/Favorites';
 import Categories from '@/app/_components/header/categories/Categories';
+import CartBadge from '@/app/_components/header/cart-badge/CartBadge';
 
 const Header = () => {
   return (
@@ -19,6 +20,7 @@ const Header = () => {
         </Space>
         <Flex gap={24} align={'center'}>
           <Search />
+          <Favorites />
           <CartBadge />
           <UserAvatar />
         </Flex>

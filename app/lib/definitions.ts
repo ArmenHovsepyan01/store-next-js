@@ -59,6 +59,7 @@ export interface FormValues {
   color: string | number;
   images: File[];
   sizes: string | number;
+  user_id?: number;
 }
 
 export interface IProduct {
@@ -73,6 +74,7 @@ export interface IProduct {
   images: ImagesArrayItem[];
   colors?: string;
   sizes?: string[];
+  user_id?: number;
 }
 
 interface ImagesArrayItem {

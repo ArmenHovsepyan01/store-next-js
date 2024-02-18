@@ -24,14 +24,14 @@ const LoginForm = () => {
         password: password
       });
 
-      console.log(data);
       Cookies.set('token', data.access_token);
 
       await dispatch(fetchUserData());
       router.replace('/dashboard');
     } catch (e: any) {
-      console.error(e);
-      return e.response.data.error.slice(6);
+      console.error(e.message);
+      // return e.response.data.error.slice(6);
+      return e.error;
     }
   }
 

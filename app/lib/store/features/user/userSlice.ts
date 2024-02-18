@@ -22,12 +22,14 @@ export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => 
 });
 interface UserLoggedIn {
   loggedIn: boolean;
-  avatar: string;
+  id?: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
 
 const initialState: UserLoggedIn = {
-  loggedIn: false,
-  avatar: ''
+  loggedIn: false
 };
 
 const userSlice = createSlice({
@@ -36,7 +38,6 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserLoggedIn>) => {
       state.loggedIn = action.payload.loggedIn;
-      state.avatar = action.payload.avatar;
     }
   },
   extraReducers: (builder) => {

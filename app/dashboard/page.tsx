@@ -13,6 +13,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import Categories from '@/app/dashboard/_components/categories/Categories';
 import Sizes from '@/app/dashboard/_components/sizes/Sizes';
 import Colors from '@/app/dashboard/_components/colors/Colors';
+import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
 const Dashboard = () => {
   const router = useRouter();
@@ -20,13 +21,15 @@ const Dashboard = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [files, setFiles] = useState<any>();
   const [file, setFile] = useState<UploadFile | null>();
+  const user = useAppSelector((state) => state.user);
 
   async function createProduct(values: FormValues) {
     try {
       const formValues: FormValues = {
         ...values,
         main_image: file!,
-        images: files!
+        images: files!,
+        user_id: user.id
       };
 
       const formData = appendFormData(formValues);

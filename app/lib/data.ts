@@ -7,7 +7,7 @@ export async function getAllProducts(query?: string, token?: string) {
   if (query) {
     url = `${url}?${query}`;
   }
-
+  console.log(token);
   try {
     const { data } = await axios.get(url, {
       headers: {
@@ -17,7 +17,7 @@ export async function getAllProducts(query?: string, token?: string) {
     return data.product as IProduct[];
   } catch (e: any) {
     console.log(e);
-    throw new Error(e.message);
+    // throw new Error(e.message);
   }
 }
 
