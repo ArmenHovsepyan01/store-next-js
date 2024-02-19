@@ -9,7 +9,7 @@ import { IProduct, Product } from '@/app/lib/definitions';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import { removeFromCart } from '@/app/lib/store/features/cart/cartSlice';
+import { removeFromFavorites } from '@/app/lib/store/features/favorites/favoritesSlice';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -32,7 +32,7 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
           }
         }
       );
-      dispatch(removeFromCart({ id: product.id }));
+      dispatch(removeFromFavorites({ id: product.id }));
       router.replace('/');
       router.refresh();
     } catch (e) {
@@ -50,20 +50,23 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
 
   const publishProduct = async () => {
     try {
-      const { data } = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/product/${product.id}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`
-        },
-        body: {
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${product.id}`,
+        {
           isPublished: true
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          }
         }
-      });
+      );
 
       // product.isPublished = false;
       message.success('You successfully published this product.');
       console.log(data);
     } catch (e) {
-      message.success('Oops something gone wrong try again.');
+      message.warning('Oops something gone wrong try again.');
       console.error(e);
     }
   };

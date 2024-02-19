@@ -29,9 +29,8 @@ const LoginForm = () => {
       await dispatch(fetchUserData());
       router.replace('/dashboard');
     } catch (e: any) {
-      console.error(e.message);
-      // return e.response.data.error.slice(6);
-      return e.error;
+      console.error(e);
+      return e.response.data.error;
     }
   }
 

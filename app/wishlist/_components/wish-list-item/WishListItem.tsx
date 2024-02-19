@@ -9,20 +9,20 @@ import Card from 'antd/lib/card/Card';
 
 import Count from '@/app/wishlist/_components/count/Count';
 
-import { CartItem } from '@/app/lib/definitions';
+import { FavoritesItem } from '@/app/lib/definitions';
 import { useAppDispatch } from '@/app/lib/store/hooks';
 import {
-  addToCart,
+  addToFavorites,
   decreaseCountOfProduct,
-  removeFromCart
-} from '@/app/lib/store/features/cart/cartSlice';
+  removeFromFavorites
+} from '@/app/lib/store/features/favorites/favoritesSlice';
 
-const WishListItem: FC<CartItem> = ({ count, product }) => {
+const WishListItem: FC<FavoritesItem> = ({ count, product }) => {
   const { id, name, price, images } = product;
   const dispatch = useAppDispatch();
 
   const increaseProductCount = () => {
-    dispatch(addToCart({ product: product }));
+    dispatch(addToFavorites({ product: product }));
   };
 
   const decreaseProductCount = () => {
@@ -44,7 +44,7 @@ const WishListItem: FC<CartItem> = ({ count, product }) => {
         <DeleteFilled
           key="delete"
           onClick={() => {
-            dispatch(removeFromCart({ id: id }));
+            dispatch(removeFromFavorites({ id: id }));
           }}
         />
       ]}

@@ -34,15 +34,13 @@ const Dashboard = () => {
 
       const formData = appendFormData(formValues);
 
-      console.log(formValues, '-=-');
-
       const { data } = await axios.post('/api/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
 
-      console.log(data);
+      router.replace(`product/${data.id}`);
 
       message.success('Product created successfully.');
 

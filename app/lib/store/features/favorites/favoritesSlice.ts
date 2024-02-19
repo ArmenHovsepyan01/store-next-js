@@ -1,36 +1,34 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
-import { CartItem, IProduct, Product } from '@/app/lib/definitions';
-import { startServer } from 'next/dist/server/lib/start-server';
+import { FavoritesItem, IProduct } from '@/app/lib/definitions';
 
-interface Cart {
-  items: CartItem[];
+interface Favorites {
+  items: FavoritesItem[];
 }
 
-interface CartProduct {
+interface FavoritesProduct {
   product: IProduct;
 }
 interface ProductID {
   id: number;
 }
 
-const loadInitialCartData = () => {
+const loadInitialFavoritesData = () => {
   if (process.browser) {
-    const cartJSON = localStorage.getItem('cart');
+    const cartJSON = localStorage.getItem('favorites');
     return cartJSON ? JSON.parse(cartJSON) : [];
   }
   return [];
 };
 
-const initialState: Cart = {
-  items: loadInitialCartData()
+const initialState: Favorites = {
+  items: loadInitialFavoritesData()
 };
 
-const cartSlice = createSlice({
-  name: 'cart',
+const favoritesSlice = createSlice({
+  name: 'favorites',
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<CartProduct>) => {
+    addToFavorites: (state, action: PayloadAction<FavoritesProduct>) => {
       const cartItem = state.items.find((item) => item.product.id === action.payload.product.id);
       if (cartItem) {
         state.items = state.items.map((item) => {
@@ -50,7 +48,7 @@ const cartSlice = createSlice({
         });
       }
     },
-    removeFromCart: (state, action: PayloadAction<ProductID>) => {
+    removeFromFavorites: (state, action: PayloadAction<ProductID>) => {
       state.items = state.items.filter((item) => item.product.id !== action.payload.id);
     },
     decreaseCountOfProduct: (state, action: PayloadAction<ProductID>) => {
@@ -65,7 +63,7 @@ const cartSlice = createSlice({
         return item;
       });
     },
-    editCartProduct: (state, action: PayloadAction<CartProduct>) => {
+    editFavoritesProduct: (state, action: PayloadAction<FavoritesProduct>) => {
       state.items = state.items.map((item) => {
         if (item.product.id === action.payload.product.id) {
           return {
@@ -80,6 +78,6 @@ const cartSlice = createSlice({
   }
 });
 
-export const { addToCart, removeFromCart, decreaseCountOfProduct, editCartProduct } =
-  cartSlice.actions;
-export default cartSlice.reducer;
+export const { addToFavorites, removeFromFavorites, decreaseCountOfProduct, editFavoritesProduct } =
+  favoritesSlice.actions;
+export default favoritesSlice.reducer;

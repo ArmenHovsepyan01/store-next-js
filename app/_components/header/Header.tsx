@@ -13,9 +13,9 @@ const Header = () => {
     <header className="header">
       <Flex gap={24} align={'center'} justify={'space-between'} style={{ height: '100%' }}>
         <Space size={'large'}>
-          <Link href={'/'}>
+          <a href={'/'}>
             <span className="header-title">Products</span>
-          </Link>
+          </a>
           <Categories />
         </Space>
         <Flex gap={24} align={'center'}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { CartItem } from '@/app/lib/definitions';
+import { FavoritesItem } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
 import { Divider, Flex } from 'antd';
 import WishListItem from '@/app/wishlist/_components/wish-list-item/WishListItem';
@@ -8,9 +8,9 @@ import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
 import { useAppSelector } from '@/app/lib/store/hooks';
 
 const WishList = () => {
-  const products = useAppSelector((state) => state.cart.items);
+  const products = useAppSelector((state) => state.favorites.items);
   const [total, setTotal] = useState<number>(0);
-  const countTotal = (products: CartItem[]) => {
+  const countTotal = (products: FavoritesItem[]) => {
     let total = 0;
     products.forEach((item: any) => {
       total += item.product.price * item.count;

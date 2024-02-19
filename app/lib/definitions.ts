@@ -33,7 +33,7 @@ export interface SearchParams {
   price_max?: string;
 }
 
-export interface CartItem {
+export interface FavoritesItem {
   count: number;
   product: IProduct;
 }
@@ -72,8 +72,8 @@ export interface IProduct {
   category: string;
   main_img: string;
   images: ImagesArrayItem[];
-  colors?: string;
-  sizes?: string[];
+  colors?: IColor[];
+  sizes?: ISize[];
   user_id?: number;
 }
 
@@ -81,4 +81,22 @@ interface ImagesArrayItem {
   id: number;
   image_url: string;
   productId: number;
+}
+
+export interface CartItem {
+  id: number;
+  user_id: number;
+  product_id: number;
+  quantity: number;
+  Product: IProduct;
+}
+
+interface IColor {
+  id: number;
+  color: string;
+}
+
+interface ISize {
+  id: number;
+  size: string;
 }

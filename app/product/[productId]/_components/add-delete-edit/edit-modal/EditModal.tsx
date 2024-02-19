@@ -6,8 +6,6 @@ import { Button, Flex, Form, Input } from 'antd';
 import axios from 'axios';
 import TextArea from 'antd/es/input/TextArea';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import { editCartProduct } from '@/app/lib/store/features/cart/cartSlice';
-import { setProduct } from '@/app/lib/store/features/product/product';
 
 import { usePathname, useRouter } from 'next/navigation';
 

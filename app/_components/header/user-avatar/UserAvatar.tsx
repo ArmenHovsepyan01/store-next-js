@@ -15,8 +15,10 @@ const UserAvatar = () => {
 
   useEffect(() => {
     (async function () {
-      const token = Cookies.get('token');
-      if (token) await dispatch(fetchUserData());
+      if (typeof window !== 'undefined') {
+        const token = Cookies.get('token');
+        if (token) await dispatch(fetchUserData());
+      }
     })();
   }, [dispatch]);
 
@@ -28,8 +30,7 @@ const UserAvatar = () => {
     Cookies.remove('token');
     dispatch(
       setUser({
-        loggedIn: false,
-        avatar: ''
+        loggedIn: false
       })
     );
 
@@ -41,7 +42,6 @@ const UserAvatar = () => {
     <Space>
       <Avatar
         size={34}
-        src={user.avatar ? user.avatar : null}
         icon={<UserOutlined />}
         style={{ backgroundColor: 'white', color: 'black', cursor: 'pointer' }}
         onClick={navigateUser}

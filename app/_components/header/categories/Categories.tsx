@@ -50,8 +50,6 @@ const Categories = () => {
     replace(`${pathname}?categoryId=${key}`);
   };
 
-  console.log(categories);
-
   return (
     <Flex gap={24} style={{ height: '100%' }} align={'center'}>
       {categories?.map((item) => {

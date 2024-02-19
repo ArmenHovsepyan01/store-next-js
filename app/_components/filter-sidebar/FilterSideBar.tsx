@@ -1,13 +1,14 @@
 'use client';
-import React, { FC, useEffect, useRef } from 'react';
 
-import styles from '../../styles/FilterSideBar.module.scss';
+import React, { FC } from 'react';
+
 import { Button, Divider, Drawer, Flex, Menu, type MenuProps, Space } from 'antd';
-import { CloseOutlined, MailOutlined } from '@ant-design/icons';
+import { MailOutlined } from '@ant-design/icons';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import FilterByPrice from '../filter-by-price/FilterByPrice';
 import FilterByBrand from '@/app/_components/filter-sidebar/filter-by-brand/FilterByBrand';
 import FilterBySize from '@/app/_components/filter-sidebar/filter-by-size/FilterBySize';
+import { useAppSelector } from '@/app/lib/store/hooks';
 
 interface FilterSideBarProps {
   closeFilterSidebar: () => void;
@@ -36,39 +37,18 @@ function getItem(
   } as MenuItem;
 }
 
-const categoryMenuItems: CategoryMenuItem[] = [
-  {
-    id: 1,
-    label: 'Clothes'
-  },
-  {
-    id: 2,
-    label: 'Electronics'
-  },
-  {
-    id: 3,
-    label: 'Furniture'
-  },
-  {
-    id: 4,
-    label: 'Shoes'
-  },
-  {
-    id: 5,
-    label: 'Miscellaneous'
-  }
-];
-
 const FilterSideBar: FC<FilterSideBarProps> = ({ closeFilterSidebar, isOpen }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const categories = useAppSelector((state) => state.productCategories.categories);
   const { replace } = useRouter();
 
   const setCategoryMenuItem = () => {
     const items: MenuItem[] = [];
 
-    categoryMenuItems.forEach(({ id, label }) => {
-      items.push(getItem(label, id));
+    categories.forEach(({ id, category }) => {
+      category = category.slice(0, 1).toUpperCase() + category.slice(1);
+      items.push(getItem(category, id));
     });
 
     return items;
@@ -113,7 +93,6 @@ const FilterSideBar: FC<FilterSideBarProps> = ({ closeFilterSidebar, isOpen }) =
         <Divider />
         <FilterByPrice closeFilterSideBar={closeFilterSidebar} />
         <FilterByBrand closeFilterSideBar={closeFilterSidebar} />
-        <FilterBySize closeFilterSideBar={closeFilterSidebar} />
       </Flex>
     </Drawer>
   );

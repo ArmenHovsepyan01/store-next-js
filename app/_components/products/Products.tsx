@@ -14,7 +14,6 @@ interface ProductsProps {
 }
 
 const Products: FC<ProductsProps> = async ({ searchParams }) => {
-  const perPage: number = 6;
   const cookiesStore = cookies();
   const token = cookiesStore.get('token');
 

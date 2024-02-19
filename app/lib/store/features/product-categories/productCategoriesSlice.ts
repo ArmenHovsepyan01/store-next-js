@@ -5,7 +5,7 @@ export const fetchProductCategories = createAsyncThunk(
   'categories/fetchProductCategories',
   async () => {
     try {
-      const response = await axios.get('api/categories');
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
       return response.data;
     } catch (e: any) {
       throw new Error('Failed to fetch categories.');

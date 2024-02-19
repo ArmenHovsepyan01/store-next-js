@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { setProduct } from '@/app/lib/store/features/product/product';
 import { Image as AntImage } from 'antd';
 import Loading from '@/app/product/[productId]/loading';
-import AddToCart from '@/app/product/[productId]/_components/add-to-cart/AddToCart';
+import AddToFavorites from '@/app/product/[productId]/_components/add-to-favorites/AddToFavorites';
 
 interface ProductById {
   params: {
@@ -42,6 +42,8 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
       }
     })();
   }, [dispatch, productId]);
+
+  console.log(product.colors);
 
   return (
     <main>
@@ -83,7 +85,37 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
             <h2 className="product-title">{product.name}</h2>
             <span className="product-price">{product.price} &#36;</span>
             <p>{product.description}</p>
-            <AddToCart product={product} />
+            <Flex gap={12}>
+              <h3>Color</h3>
+              {product?.colors?.map((item) => {
+                return (
+                  <div
+                    style={{
+                      backgroundColor: `${item.color.toLowerCase()}`,
+                      width: 20,
+                      height: 20,
+                      borderRadius: 4
+                    }}
+                    key={item.id}></div>
+                );
+              })}
+            </Flex>
+            <Flex gap={12} align={'center'}>
+              <h3>Size </h3>
+              {product?.sizes?.map((item) => {
+                return (
+                  <span key={item.id} style={{ textTransform: 'capitalize' }}>
+                    {item.size}
+                  </span>
+                );
+              })}
+            </Flex>
+            <Flex gap={12} align={'center'}>
+              <h4>Brand </h4>
+              <span>{product.brand}</span>
+            </Flex>
+
+            <AddToFavorites product={product} />
             {product.user_id === user.id && <AddDeleteEdit product={product} />}
           </Flex>
         </Flex>
