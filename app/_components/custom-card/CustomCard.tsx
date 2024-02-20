@@ -14,7 +14,6 @@ import {
   removeFromFavorites
 } from '@/app/lib/store/features/favorites/favoritesSlice';
 import AddToCart from '@/app/_components/custom-card/add-to-cart/AddToCart';
-import Cookies from 'js-cookie';
 
 interface CustomCardProps {
   product: IProduct;
@@ -63,7 +62,7 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
             style={{ color: isFavorite ? 'red' : 'gray' }}
             onClick={addProductToFavorites}
           />
-          {typeof window && <AddToCart productId={product.id} />}
+          {userIsLoggedIn && <AddToCart productId={product.id} />}
         </>
       )}
       <Link href={`product/${product.id}`} key={product.id}>

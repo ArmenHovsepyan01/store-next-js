@@ -5,6 +5,10 @@ interface IState {
   product: IProduct;
 }
 
+interface IPublish {
+  isPublished: boolean;
+}
+
 const initialState: IState = {
   product: {} as IProduct
 };
@@ -15,9 +19,15 @@ const productSlice = createSlice({
   reducers: {
     setProduct: (state, action: PayloadAction<IState>) => {
       state.product = action.payload.product;
+    },
+    publishCurrentProduct: (state, action: PayloadAction<IPublish>) => {
+      state.product = {
+        ...state.product,
+        isPublished: action.payload.isPublished
+      };
     }
   }
 });
 
-export const { setProduct } = productSlice.actions;
+export const { setProduct, publishCurrentProduct } = productSlice.actions;
 export default productSlice.reducer;

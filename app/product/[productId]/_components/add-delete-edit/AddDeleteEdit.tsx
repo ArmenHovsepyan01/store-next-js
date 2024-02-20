@@ -10,6 +10,8 @@ import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { removeFromFavorites } from '@/app/lib/store/features/favorites/favoritesSlice';
+import { publishCurrentProduct } from '@/app/lib/store/features/product/product';
+
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -62,8 +64,12 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
         }
       );
 
-      // product.isPublished = false;
       message.success('You successfully published this product.');
+      dispatch(
+        publishCurrentProduct({
+          isPublished: true
+        })
+      );
       console.log(data);
     } catch (e) {
       message.warning('Oops something gone wrong try again.');

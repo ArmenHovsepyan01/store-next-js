@@ -25,6 +25,8 @@ const Dashboard = () => {
 
   async function createProduct(values: FormValues) {
     try {
+      if (!file) return setErrorMessage('Please upload main image.');
+
       const formValues: FormValues = {
         ...values,
         main_image: file!,
@@ -43,8 +45,6 @@ const Dashboard = () => {
       router.replace(`product/${data.id}`);
 
       message.success('Product created successfully.');
-
-      console.log(values);
     } catch (e: any) {
       console.log(e);
       setErrorMessage(e.message);

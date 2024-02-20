@@ -13,7 +13,11 @@ interface UploadProps {
 
 const App: React.FC<UploadProps> = ({ handleUploadChanges, removeFromFilesList }) => (
   <>
-    <Upload listType="picture" onChange={handleUploadChanges} onRemove={removeFromFilesList}>
+    <Upload
+      listType="picture"
+      onChange={handleUploadChanges}
+      onRemove={removeFromFilesList}
+      multiple={true}>
       <Button icon={<UploadOutlined />}>Upload</Button>
     </Upload>
   </>

@@ -43,8 +43,6 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
     })();
   }, [dispatch, productId]);
 
-  console.log(product.colors);
-
   return (
     <main>
       {loading ? (
