@@ -1,45 +1,59 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import Sider from 'antd/es/layout/Sider';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 
-const items = [VideoCameraOutlined, UploadOutlined].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`
-}));
+import styles from '../styles/Mystore.module.scss';
+import MyStoreProducts from '@/app/mystore/_components/mystore-products/MyStoreProducts';
+import Dashboard from '@/app/dashboard/page';
 
 const MyStore = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [category, setCategory] = useState<string>('1');
+
+  const menuItems = [
+    {
+      key: '1',
+      label: 'All products'
+    },
+    {
+      key: '2',
+      label: 'Published products'
+    },
+    {
+      key: '3',
+      label: 'Unpublished products'
+    },
+    {
+      key: '4',
+      label: 'Create Product'
+    }
+  ];
+
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
+
   return (
-    <Layout style={{ marginTop: 70 }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Layout className={styles.layout}>
+      <Sider trigger={null}>
         <div className="demo-logo-vertical" />
+        <h3 className={styles.title}>My Store</h3>
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1'
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2'
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3'
-            }
-          ]}
+          selectedKeys={[category]}
+          items={menuItems}
+          onClick={(e) => setCategory(e.key)}
         />
       </Sider>
+      {category === '4' ? (
+        <Dashboard handleCategoryChange={handleCategoryChange} />
+      ) : (
+        <MyStoreProducts category={category} />
+      )}
     </Layout>
   );
 };

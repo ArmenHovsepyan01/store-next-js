@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button, Divider, Flex, Form, Input, message, UploadFile } from 'antd';
+import { Button, Flex, Form, Input, message, UploadFile } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
 import { FormValues } from '@/app/lib/definitions';
 import { appendFormData } from '@/app/helpers/appendFormData';
 import axios from 'axios';
@@ -13,9 +12,13 @@ import { UploadChangeParam } from 'antd/es/upload';
 import Categories from '@/app/dashboard/_components/categories/Categories';
 import Sizes from '@/app/dashboard/_components/sizes/Sizes';
 import Colors from '@/app/dashboard/_components/colors/Colors';
-import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+import { useAppSelector } from '@/app/lib/store/hooks';
 
-const Dashboard = () => {
+interface CreateProductProps {
+  handleCategoryChange: (category: string) => void;
+}
+
+const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,7 +45,7 @@ const Dashboard = () => {
         }
       });
 
-      router.replace(`product/${data.id}`);
+      handleCategoryChange('1');
 
       message.success('Product created successfully.');
     } catch (e: any) {
@@ -65,7 +68,6 @@ const Dashboard = () => {
 
     if (inputFiles?.length) {
       const images = Array.from(inputFiles.map((file) => file.originFileObj));
-      console.log(images);
       setFiles(images);
     }
   };
@@ -91,80 +93,78 @@ const Dashboard = () => {
   }
 
   return (
-    <main>
-      <Flex align={'center'} justify={'space-between'} style={{ width: '100%' }}>
-        <GoBackButton path={'/'} />
-        <h3>Create Product</h3>
-        <div></div>
-      </Flex>
-      <Divider />
-      <Flex align={'center'} justify={'center'} vertical={true} gap={24}>
-        <Form
-          layout={'vertical'}
-          form={form}
-          onFinish={createProduct}
-          style={{ width: 400 }}
-          encType="multipart/form-data">
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: 'Please fill the input.' }]}>
-            <Input placeholder="Name" />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true, message: 'Please fill the input.' }]}>
-            <TextArea placeholder="Descripton" autoSize />
-          </Form.Item>
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[{ required: true, message: 'Please fill the input.' }]}>
-            <Input placeholder="Price" type={'number'} />
-          </Form.Item>
-          <Form.Item
-            name="brand"
-            label="Brand"
-            rules={[{ required: true, message: 'Please fill the input.' }]}>
-            <Input placeholder="Brand" />
-          </Form.Item>
-
-          <Categories />
-
-          <Sizes />
-
-          <Colors />
-
-          <Form.Item label="Main image">
-            <Upload
-              handleUploadChanges={handleMainImageChanges}
-              removeFromFilesList={removeMainImage}
-            />
-          </Form.Item>
-
-          <Form.Item name="images" label="Other images">
-            <Upload
-              handleUploadChanges={handleOtherImageChanges}
-              removeFromFilesList={removeImagesFromFiles}
-            />
-          </Form.Item>
-
-          <Form.Item>
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-          </Form.Item>
-
-          <Form.Item>
-            <Flex justify={'space-between'}>
-              <Button type={'primary'} htmlType={'submit'}>
-                Create
-              </Button>
-            </Flex>
-          </Form.Item>
-        </Form>
-      </Flex>
-    </main>
+    <Flex
+      align={'center'}
+      justify={'center'}
+      vertical={true}
+      gap={24}
+      style={{
+        backgroundColor: 'white',
+        borderRadius: 4,
+        width: '100%',
+        overflow: 'auto'
+      }}>
+      <Form
+        layout={'vertical'}
+        form={form}
+        onFinish={createProduct}
+        style={{ width: 400, backgroundColor: 'white', marginTop: 80 }}
+        encType="multipart/form-data">
+        <Form.Item>
+          <Flex justify={'center'} align={'center'} vertical={true}>
+            <h3>Create Product</h3>
+          </Flex>
+        </Form.Item>
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          <Input placeholder="Name" />
+        </Form.Item>
+        <Form.Item
+          name="description"
+          label="Description"
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          <TextArea placeholder="Descripton" autoSize />
+        </Form.Item>
+        <Form.Item
+          name="price"
+          label="Price"
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          <Input placeholder="Price" type={'number'} />
+        </Form.Item>
+        <Form.Item
+          name="brand"
+          label="Brand"
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          <Input placeholder="Brand" />
+        </Form.Item>
+        <Categories />
+        <Sizes />
+        <Colors />
+        <Form.Item label="Main image">
+          <Upload
+            handleUploadChanges={handleMainImageChanges}
+            removeFromFilesList={removeMainImage}
+          />
+        </Form.Item>
+        <Form.Item name="images" label="Other images">
+          <Upload
+            handleUploadChanges={handleOtherImageChanges}
+            removeFromFilesList={removeImagesFromFiles}
+          />
+        </Form.Item>
+        <Form.Item>{errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}</Form.Item>
+        <Form.Item>
+          <Flex justify={'space-between'}>
+            <Button type={'primary'} htmlType={'submit'}>
+              Create
+            </Button>
+          </Flex>
+        </Form.Item>
+      </Form>
+    </Flex>
   );
 };
 
-export default Dashboard;
+export default CreateProduct;

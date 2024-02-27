@@ -1,19 +1,19 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Space } from 'antd';
+import React, { useEffect } from 'react';
+
+import { Avatar } from 'antd';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+import { useAppDispatch } from '@/app/lib/store/hooks';
 import { fetchUserData, setUser } from '@/app/lib/store/features/user/userSlice';
 import { UserOutlined } from '@ant-design/icons';
-import Dropdown from '@/app/_components/header/user-avatar/dropdown/Dropdown';
+import { Dropdown } from 'antd';
+import DropdownMenu from '@/app/_components/header/user-avatar/dropdown-menu/DropdownMenu';
 
 const UserAvatar = () => {
   const { replace } = useRouter();
-  const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     (async function () {
@@ -23,10 +23,6 @@ const UserAvatar = () => {
       }
     })();
   }, [dispatch]);
-
-  const navigateUser = () => {
-    replace('/login');
-  };
 
   const logoutUser = () => {
     Cookies.remove('token');
@@ -40,31 +36,19 @@ const UserAvatar = () => {
     window.location.reload();
   };
 
-  function toggleAvatar() {
-    setIsOpen((prev) => !prev);
-  }
-
-  function closeDropdownMenu() {
-    setIsOpen(false);
-  }
-
   return (
-    <>
-      <Space>
-        <Avatar
-          size={34}
-          icon={<UserOutlined />}
-          style={{
-            backgroundColor: 'white',
-            color: 'black',
-            cursor: 'pointer',
-            position: 'relative'
-          }}
-          onClick={toggleAvatar}
-        />
-      </Space>
-      {isOpen && <Dropdown closeDropdownMenu={closeDropdownMenu} />}
-    </>
+    <Dropdown trigger={['click']} overlay={<DropdownMenu logoutUser={logoutUser} />} arrow>
+      <Avatar
+        size={34}
+        icon={<UserOutlined />}
+        style={{
+          backgroundColor: 'white',
+          color: 'black',
+          cursor: 'pointer',
+          position: 'relative'
+        }}
+      />
+    </Dropdown>
   );
 };
 

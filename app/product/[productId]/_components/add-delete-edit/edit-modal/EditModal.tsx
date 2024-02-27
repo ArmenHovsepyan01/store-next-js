@@ -8,6 +8,10 @@ import TextArea from 'antd/es/input/TextArea';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
 import { usePathname, useRouter } from 'next/navigation';
+import { setProduct } from '@/app/lib/store/features/product/product';
+import Cookies from 'js-cookie';
+import { IProduct } from '@/app/lib/definitions';
+import { updateProduct } from '@/app/lib/store/features/products/productsSlice';
 
 interface FormValues {
   name: string;
@@ -17,9 +21,10 @@ interface FormValues {
 
 interface EditModalProps {
   closeModal: () => void;
+  currentProduct?: IProduct;
 }
 
-const EditModal: FC<EditModalProps> = ({ closeModal }) => {
+const EditModal: FC<EditModalProps> = ({ closeModal, currentProduct }) => {
   const router = useRouter();
   const pathname = usePathname();
   const [form] = Form.useForm<FormValues>();
@@ -27,21 +32,24 @@ const EditModal: FC<EditModalProps> = ({ closeModal }) => {
   const product = useAppSelector((state) => state.product.product);
 
   form.setFieldsValue({
-    name: product.name || '',
-    description: product.description || '',
-    price: product.price.toString() || ''
+    name: currentProduct?.name || product.name,
+    description: currentProduct?.description || product.description,
+    price: currentProduct?.price.toString() || product.price.toString()
   });
+
   const editProduct = async (values: FormValues) => {
     try {
       const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/${product.id}`,
-        values
+        `${process.env.NEXT_PUBLIC_API_URL}/product/${currentProduct?.id || product.id}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`
+          }
+        }
       );
 
-      //
-      // dispatch(setProduct({ product: data }));
-      // dispatch(editCartProduct({ product: data }));
-      window.location.reload();
+      dispatch(updateProduct({ id: currentProduct?.id, values: values }));
       closeModal();
     } catch (e) {
       console.error(e);
