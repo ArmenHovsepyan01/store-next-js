@@ -33,7 +33,6 @@ const UserAvatar = () => {
     );
 
     replace('/');
-    window.location.reload();
   };
 
   return (

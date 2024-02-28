@@ -16,7 +16,7 @@ export const fetchAllProducts = createAsyncThunk('products/fetchAllProducts', as
   const token = Cookies.get('token');
 
   try {
-    const response = await axios.get('/api/products', {
+    const response = await axios.get('/api/user-products', {
       headers: {
         Authorization: `Bearer ${token}`
       }

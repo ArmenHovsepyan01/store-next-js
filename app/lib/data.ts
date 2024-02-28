@@ -9,15 +9,10 @@ export async function getAllProducts(query?: string, token?: string) {
   }
   console.log(query);
   try {
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const { data } = await axios.get(url);
     return data.product as IProduct[];
   } catch (e: any) {
     console.log(e);
-    // throw new Error(e.message);
   }
 }
 

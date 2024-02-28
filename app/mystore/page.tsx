@@ -7,7 +7,7 @@ import { Layout, Menu } from 'antd';
 
 import styles from '../styles/Mystore.module.scss';
 import MyStoreProducts from '@/app/mystore/_components/mystore-products/MyStoreProducts';
-import Dashboard from '@/app/dashboard/page';
+import CreateProduct from '@/app/_components/create-product/CreateProduct';
 
 const MyStore = () => {
   const [category, setCategory] = useState<string>('1');
@@ -50,7 +50,7 @@ const MyStore = () => {
         />
       </Sider>
       {category === '4' ? (
-        <Dashboard handleCategoryChange={handleCategoryChange} />
+        <CreateProduct handleCategoryChange={handleCategoryChange} />
       ) : (
         <MyStoreProducts category={category} />
       )}

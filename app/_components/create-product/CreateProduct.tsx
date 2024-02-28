@@ -7,11 +7,11 @@ import TextArea from 'antd/es/input/TextArea';
 import { FormValues } from '@/app/lib/definitions';
 import { appendFormData } from '@/app/helpers/appendFormData';
 import axios from 'axios';
-import Upload from '@/app/dashboard/_components/upload/Upload';
+import Upload from './upload/Upload';
 import { UploadChangeParam } from 'antd/es/upload';
-import Categories from '@/app/dashboard/_components/categories/Categories';
-import Sizes from '@/app/dashboard/_components/sizes/Sizes';
-import Colors from '@/app/dashboard/_components/colors/Colors';
+import Categories from './categories/Categories';
+import Sizes from './sizes/Sizes';
+import Colors from './colors/Colors';
 import { useAppSelector } from '@/app/lib/store/hooks';
 
 interface CreateProductProps {

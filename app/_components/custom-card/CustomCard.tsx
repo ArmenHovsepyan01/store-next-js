@@ -14,22 +14,28 @@ import {
   removeFromFavorites
 } from '@/app/lib/store/features/favorites/favoritesSlice';
 import AddToCart from '@/app/_components/custom-card/add-to-cart/AddToCart';
+import Cookies from 'js-cookie';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { message } from 'antd';
+import axios from 'axios';
+import { decryptActionBoundArgs } from 'next/dist/server/app-render/action-encryption';
 
 interface CustomCardProps {
   product: IProduct;
+  token?: RequestCookie;
 }
 
-const CustomCard: FC<CustomCardProps> = ({ product }) => {
+const CustomCard: FC<CustomCardProps> = ({ product, token }) => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [src, setSrc] = useState(product.main_img);
+  const isUserLoggedIn = useAppSelector((state) => state.user.loggedIn);
   const dispatch = useAppDispatch();
-  const userIsLoggedIn = useAppSelector((state) => state.user.loggedIn);
 
   useEffect(() => {
-    const cartJSON = localStorage.getItem('favorites');
+    const favoritesJSON = localStorage.getItem('favorites');
 
-    if (cartJSON) {
-      const cart: FavoritesItem[] = JSON.parse(cartJSON);
+    if (favoritesJSON) {
+      const cart: FavoritesItem[] = JSON.parse(favoritesJSON);
       const initialProduct = cart.find((item) => item?.product?.id === product.id);
 
       if (initialProduct) {
@@ -38,19 +44,39 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-    }
-  }, []);
+  const addProductToFavorites = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`
+      }
+    };
 
-  const addProductToFavorites = () => {
-    if (!isFavorite) {
-      dispatch(addToFavorites({ product: product }));
-    } else {
-      dispatch(removeFromFavorites({ id: product.id }));
+    try {
+      if (!isFavorite) {
+        if (isUserLoggedIn) {
+          await axios.post(
+            '/api/favorites',
+            {
+              product_id: product.id
+            },
+            config
+          );
+        }
+        dispatch(
+          addToFavorites({
+            product: {
+              ...product
+            }
+          })
+        );
+      } else {
+        if (isUserLoggedIn) await axios.delete(`/api/favorites/${product.id}`, config);
+        dispatch(removeFromFavorites({ id: product.id }));
+      }
+      setIsFavorite((prev) => !prev);
+    } catch (e) {
+      message.error('Something gone wrong.');
     }
-
-    setIsFavorite((prev) => !prev);
   };
 
   return (
@@ -62,7 +88,7 @@ const CustomCard: FC<CustomCardProps> = ({ product }) => {
             style={{ color: isFavorite ? 'red' : 'gray' }}
             onClick={addProductToFavorites}
           />
-          {userIsLoggedIn && <AddToCart productId={product.id} />}
+          {token && <AddToCart productId={product.id} />}
         </>
       )}
       <Link href={`product/${product.id}`} key={product.id}>

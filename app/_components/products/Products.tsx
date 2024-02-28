@@ -43,13 +43,12 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
       <Flex gap={24} wrap="wrap" align="center" justify="space-between" style={{ padding: 24 }}>
         {productsData?.length !== 0 ? (
           productsData?.map((item) => {
-            return <CustomCard product={item} key={item.id} />;
+            return <CustomCard product={item} key={item.id} token={token} />;
           })
         ) : (
           <div>There is nothing.</div>
         )}
       </Flex>
-      {/*<CustomPagination total={totalPages} />*/}
     </>
   );
 };

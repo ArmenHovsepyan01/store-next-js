@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FavoritesItem, IProduct } from '@/app/lib/definitions';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 interface Favorites {
   items: FavoritesItem[];
@@ -12,16 +14,35 @@ interface ProductID {
   id: number;
 }
 
+export const fetchFavoritesData = createAsyncThunk('favorites/fetchFavoritesData', async () => {
+  try {
+    const token = Cookies.get('token');
+
+    const { data } = await axios.get('api/favorites', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return data.data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+});
+
 const loadInitialFavoritesData = () => {
   if (process.browser) {
     const cartJSON = localStorage.getItem('favorites');
-    return cartJSON ? JSON.parse(cartJSON) : [];
+    if (!cartJSON) {
+      return [];
+    } else {
+      return JSON.parse(cartJSON);
+    }
   }
-  return [];
 };
 
 const initialState: Favorites = {
-  items: loadInitialFavoritesData()
+  items: Cookies.get('token') ? [] : loadInitialFavoritesData()
 };
 
 const favoritesSlice = createSlice({
@@ -35,7 +56,7 @@ const favoritesSlice = createSlice({
           if (item.product.id === action.payload.product.id) {
             return {
               ...item,
-              count: item.count + 1
+              quantity: item.quantity + 1
             };
           }
 
@@ -43,7 +64,7 @@ const favoritesSlice = createSlice({
         });
       } else {
         state.items.push({
-          count: 1,
+          quantity: 1,
           product: action.payload.product
         });
       }
@@ -56,7 +77,7 @@ const favoritesSlice = createSlice({
         if (item.product.id === action.payload.id) {
           return {
             ...item,
-            count: item.count - 1
+            quantity: item.quantity - 1
           };
         }
 
@@ -74,10 +95,26 @@ const favoritesSlice = createSlice({
 
         return item;
       });
+    },
+    setAllData: (state, action) => {
+      state.items = action.payload.data;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchFavoritesData.fulfilled, (state, action) => {
+      return {
+        ...state,
+        ...action.payload.data
+      };
+    });
   }
 });
 
-export const { addToFavorites, removeFromFavorites, decreaseCountOfProduct, editFavoritesProduct } =
-  favoritesSlice.actions;
+export const {
+  addToFavorites,
+  removeFromFavorites,
+  decreaseCountOfProduct,
+  editFavoritesProduct,
+  setAllData
+} = favoritesSlice.actions;
 export default favoritesSlice.reducer;

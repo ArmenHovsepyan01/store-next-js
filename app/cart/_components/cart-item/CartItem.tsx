@@ -60,7 +60,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem }) => {
   return (
     <Card
       hoverable
-      style={{ width: 280 }}
+      style={{ width: 240 }}
       actions={[
         <MinusOutlined key="minus" onClick={decreaseProductCount} />,
         <Count key="count" count={quantity} />,
@@ -86,6 +86,9 @@ const CartItem: FC<CartItemProps> = ({ cartItem }) => {
       ]}
       cover={
         <Image
+          style={{
+            height: 220
+          }}
           alt="example"
           src={`${process.env.NEXT_PUBLIC_API_URL}/${main_img}`}
           fallback={'https://miro.medium.com/v2/resize:fit:1358/1*ylV603DJXpTpBsiGm4BcAQ.png'}

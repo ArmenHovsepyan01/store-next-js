@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Divider, Flex, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, Flex, Form, Input, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { useFormState } from 'react-dom';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/app/lib/store/hooks';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -15,8 +15,17 @@ const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errorMessage, dis] = useFormState(onFinish, undefined);
+  const params = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(params);
+    if (searchParams.toString() === 'confirmed=true') {
+      message.success('You successfully pass the verification.');
+    }
+  }, []);
+
   async function onFinish() {
     try {
       const { data } = await axios.post('api/users/login', {
@@ -27,7 +36,7 @@ const LoginForm = () => {
       Cookies.set('token', data.access_token);
 
       await dispatch(fetchUserData());
-      router.replace('/dashboard');
+      router.replace('/mystore');
     } catch (e: any) {
       console.error(e);
       return e.response.data.error;

@@ -34,7 +34,8 @@ export interface SearchParams {
 }
 
 export interface FavoritesItem {
-  count: number;
+  id?: number;
+  quantity: number;
   product: IProduct;
 }
 

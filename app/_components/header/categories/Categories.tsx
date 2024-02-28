@@ -45,7 +45,11 @@ const Categories = () => {
     const category: any = categories?.[key - 1];
     message.info(`You select ${category?.category}`);
 
-    if (pathname.includes('product') || pathname.includes('wishlist'))
+    if (
+      pathname.includes('product') ||
+      pathname.includes('wishlist') ||
+      pathname.includes('mystore')
+    )
       return replace(`/?categoryId=${key}`);
     replace(`${pathname}?categoryId=${key}`);
   };

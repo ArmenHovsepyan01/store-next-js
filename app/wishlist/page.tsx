@@ -1,7 +1,8 @@
 'use client';
 
-import { FavoritesItem } from '@/app/lib/definitions';
 import { useEffect, useState } from 'react';
+
+import { FavoritesItem } from '@/app/lib/definitions';
 import { Divider, Flex } from 'antd';
 import WishListItem from '@/app/wishlist/_components/wish-list-item/WishListItem';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
@@ -10,10 +11,11 @@ import { useAppSelector } from '@/app/lib/store/hooks';
 const WishList = () => {
   const products = useAppSelector((state) => state.favorites.items);
   const [total, setTotal] = useState<number>(0);
+
   const countTotal = (products: FavoritesItem[]) => {
     let total = 0;
     products.forEach((item: any) => {
-      total += item.product.price * item.count;
+      total += item.product.price * item.quantity;
     });
 
     return total;
@@ -34,9 +36,9 @@ const WishList = () => {
       </Flex>
       <Divider />
       <Flex gap={24} style={{ maxWidth: 888 }} wrap={'wrap'}>
-        {products.length !== 0 ? (
-          products.map(({ count, product }, i) => {
-            return <WishListItem count={count} product={product} key={i} />;
+        {products?.length !== 0 ? (
+          products?.map(({ quantity, product }, i) => {
+            return <WishListItem quantity={quantity} product={product} key={i} />;
           })
         ) : (
           <div>

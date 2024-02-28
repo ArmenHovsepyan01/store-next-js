@@ -9,8 +9,6 @@ import { IProduct } from '@/app/lib/definitions';
 
 import { Flex } from 'antd';
 import PreviewGroup from 'antd/lib/image/PreviewGroup';
-
-import AddDeleteEdit from '@/app/product/[productId]/_components/add-delete-edit/AddDeleteEdit';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
 
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
@@ -29,7 +27,6 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
   const dispatch = useAppDispatch();
   const product = useAppSelector((state) => state.product.product);
   const [loading, setLoading] = useState(false);
-  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     (async function () {
@@ -112,9 +109,7 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
               <h4>Brand </h4>
               <span>{product.brand}</span>
             </Flex>
-
             <AddToFavorites product={product} />
-            {product.user_id === user.id && <AddDeleteEdit product={product} />}
           </Flex>
         </Flex>
       ) : (

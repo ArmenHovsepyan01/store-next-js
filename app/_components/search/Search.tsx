@@ -22,7 +22,11 @@ const Search = () => {
       params.delete('name');
     }
 
-    if (pathname.includes('product') || pathname.includes('wishlist'))
+    if (
+      pathname.includes('product') ||
+      pathname.includes('wishlist') ||
+      pathname.includes('mystore')
+    )
       return replace(`/?${params.toString()}`);
     replace(`${pathname}?${params.toString()}`);
   }, 1000);

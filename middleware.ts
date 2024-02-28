@@ -5,7 +5,7 @@ export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (loggedIn?.value && pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
+    return NextResponse.redirect(new URL('/mystore', req.url));
   }
 
   if (!loggedIn?.value && pathname === '/mystore') {
