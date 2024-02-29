@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 
 import { Avatar } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,7 @@ import { fetchUserData, setUser } from '@/app/lib/store/features/user/userSlice'
 import { UserOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 import DropdownMenu from '@/app/_components/header/user-avatar/dropdown-menu/DropdownMenu';
+import useDynamicAntDStyles from '@/app/hooks/useDynamicStyles';
 
 const UserAvatar = () => {
   const { replace } = useRouter();

@@ -5,6 +5,7 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import './styles/global.scss';
 import Header from '@/app/_components/header/Header';
 import StoreProvider from '@/app/StoreProvider';
+import AntdStyledComponentsRegistry from '@/app/AntdStyledComponentsRegistry';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,8 +19,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>
-          <Header />
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdStyledComponentsRegistry>
+            <AntdRegistry>
+              <Header />
+              {children}
+            </AntdRegistry>
+          </AntdStyledComponentsRegistry>
         </StoreProvider>
       </body>
     </html>

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
 
 export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => {
   const token = Cookies.get('token');
@@ -12,6 +13,13 @@ export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => 
         Authorization: `Bearer ${token}`
       }
     });
+
+    const encryptedRole = CryptoJS.AES.encrypt(
+      JSON.stringify(response.data.role),
+      process.env.SECRET_KEY || 'my-password'
+    ).toString();
+
+    Cookies.set('user_role', encryptedRole);
 
     return response.data;
   } catch (error) {

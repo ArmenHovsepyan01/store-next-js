@@ -1,18 +1,28 @@
 'use client';
 
 import React, { FC, useState } from 'react';
+
 import { useRouter } from 'next/navigation';
-import { Button, Flex, Form, Input, message, UploadFile } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import { FormValues } from '@/app/lib/definitions';
-import { appendFormData } from '@/app/helpers/appendFormData';
+import { useAppSelector } from '@/app/lib/store/hooks';
+
 import axios from 'axios';
-import Upload from './upload/Upload';
+import cheerio from 'cheerio';
+
+import { Button, Flex, Form, Input, message, UploadFile } from 'antd';
+
+import TextArea from 'antd/es/input/TextArea';
+
 import { UploadChangeParam } from 'antd/es/upload';
+
+import { FormValues } from '@/app/lib/definitions';
+
+import { appendFormData } from '@/app/helpers/appendFormData';
+import Upload from './upload/Upload';
 import Categories from './categories/Categories';
 import Sizes from './sizes/Sizes';
+
 import Colors from './colors/Colors';
-import { useAppSelector } from '@/app/lib/store/hooks';
+import { extractErrorMessage } from '@/app/helpers/extractErrorMessage';
 
 interface CreateProductProps {
   handleCategoryChange: (category: string) => void;
@@ -49,8 +59,8 @@ const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
 
       message.success('Product created successfully.');
     } catch (e: any) {
-      console.log(e);
-      setErrorMessage(e.message);
+      const errorMessage = extractErrorMessage(e);
+      setErrorMessage(errorMessage);
     }
   }
 
