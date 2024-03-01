@@ -1,9 +1,32 @@
-import NextAuth from 'next-auth';
-import { httpAdapter } from 'next-auth-http-adapter';
-import adapter from 'next-auth-http-adapter';
+import NextAuth, { AuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from 'axios';
 
-export const authOptions = {
-  providers: []
+const options: AuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'email', type: 'text', placeholder: 'jsmith' },
+        password: { label: 'Password', type: 'password' }
+      },
+      async authorize(credentials, req) {
+        const { data } = await axios.post('/api/login', {
+          credentials
+        });
+
+        if (data.access_token) {
+          console.log(data);
+          return data.access_token;
+        }
+      }
+    })
+  ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      throw new Error('custom error to the client');
+    }
+  }
 };
 
-export default NextAuth(authOptions);
+export default NextAuth(options);

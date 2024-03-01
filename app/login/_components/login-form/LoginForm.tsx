@@ -7,9 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/app/lib/store/hooks';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { fetchUserData, setUser } from '@/app/lib/store/features/user/userSlice';
-import { User } from '@/app/lib/definitions';
-import { log } from 'node:util';
+import { fetchUserData } from '@/app/lib/store/features/user/userSlice';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');

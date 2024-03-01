@@ -1,0 +1,32 @@
+.dashboard {
+  margin-top: 70px ;
+
+  &Sider {
+    position: fixed;
+    height: 100ch;
+    background: #001628;
+
+    &Title {
+      color: white;
+      padding: 12px;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: normal;
+    }
+
+    &Avatar {
+      background: white !important;
+      color: black !important;
+
+      &Name {
+        color: white;
+      }
+    }
+  }
+
+  &Content {
+    margin-left: 200px;
+    padding: 24px;
+  }
+}
+

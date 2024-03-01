@@ -42,7 +42,7 @@ const WishList = () => {
           })
         ) : (
           <div>
-            <h3>Wishlist is empty.</h3>
+            <h3>Favorites is empty.</h3>
           </div>
         )}
       </Flex>

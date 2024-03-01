@@ -1,24 +1,19 @@
 import { NextResponse, NextRequest } from 'next/server';
-import Cookies from 'js-cookie';
-import CryptoJS from 'crypto-js';
+import { cookies } from 'next/headers';
 
 export default async function middleware(req: NextRequest) {
   let loggedIn = req.cookies.get('token');
-  const user_role = req.cookies.get('user_role');
 
-  const { pathname } = req.nextUrl;
+  const { pathname, searchParams } = req.nextUrl;
+  console.log(pathname, req.cookies.get('checked'));
 
-  // if (loggedIn?.value && pathname === '/login') {
-  //   return NextResponse.redirect(new URL('/mystore', req.url));
-  // }
+  if (pathname === '/api/auth/error') {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
 
-  if (user_role && pathname === '/dashboard') {
-    const bytes = CryptoJS.AES.decrypt(user_role?.value, 'my-password');
-    const admin = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-
-    if (admin === 'user') {
-      return NextResponse.redirect(new URL('/', req.url));
-    }
+  if (pathname === '/dashboard') {
+    const checked = req.cookies.get('checked');
+    if (!checked) return NextResponse.redirect(new URL('/api/auth', req.url));
   }
 
   if (!loggedIn?.value && pathname === '/mystore') {
