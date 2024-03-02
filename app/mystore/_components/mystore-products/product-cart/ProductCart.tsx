@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC, useState } from 'react';
 import { CheckCircleFilled, DeleteFilled, EditFilled } from '@ant-design/icons';
 import { Image, message } from 'antd';
@@ -12,13 +14,15 @@ import {
 } from '@/app/lib/store/features/products/productsSlice';
 import Cookies from 'js-cookie';
 import EditModal from '@/app/product/[productId]/_components/add-delete-edit/edit-modal/EditModal';
-import { publishCurrentProduct } from '@/app/lib/store/features/product/product';
+import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 
 interface ProductCartProps {
   product: IProduct;
 }
 
 const ProductCart: FC<ProductCartProps> = ({ product }) => {
+  const { replace } = useRouter();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -101,8 +105,10 @@ const ProductCart: FC<ProductCartProps> = ({ product }) => {
             src={`${process.env.NEXT_PUBLIC_API_URL}/${product.main_img}`}
             fallback={'https://miro.medium.com/v2/resize:fit:1358/1*ylV603DJXpTpBsiGm4BcAQ.png'}
             preview={false}
+            onClick={() => replace(`/product/${product.id}`)}
           />
-        }>
+        }
+      >
         <Meta title={product.name} description={`${product.price} $`} />
       </Card>
       {isOpen && <EditModal closeModal={closeEditModal} currentProduct={product} />}

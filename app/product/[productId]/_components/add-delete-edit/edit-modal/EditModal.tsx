@@ -63,19 +63,22 @@ const EditModal: FC<EditModalProps> = ({ closeModal, currentProduct }) => {
         <Form.Item
           name="name"
           label="Name"
-          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          rules={[{ required: true, message: 'Please fill the input.' }]}
+        >
           <Input placeholder="Title" />
         </Form.Item>
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          rules={[{ required: true, message: 'Please fill the input.' }]}
+        >
           <TextArea placeholder="Descripton" autoSize />
         </Form.Item>
         <Form.Item
           name="price"
           label="Price"
-          rules={[{ required: true, message: 'Please fill the input.' }]}>
+          rules={[{ required: true, message: 'Please fill the input.' }]}
+        >
           <Input placeholder="Price" type={'number'} />
         </Form.Item>
         <Form.Item>

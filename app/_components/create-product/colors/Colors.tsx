@@ -31,7 +31,8 @@ const Colors = () => {
     <Form.Item
       name="color"
       label={'Choose color'}
-      rules={[{ required: true, message: 'Please select color.' }]}>
+      rules={[{ required: true, message: 'Please select color.' }]}
+    >
       <Select
         options={options}
         notFoundContent={options.length === 0 ? <Empty /> : ''}

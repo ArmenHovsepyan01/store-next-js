@@ -86,7 +86,8 @@ const WishListItem: FC<FavoritesItem> = ({ quantity, product }) => {
           fallback={'https://miro.medium.com/v2/resize:fit:1358/1*ylV603DJXpTpBsiGm4BcAQ.png'}
           preview={false}
         />
-      }>
+      }
+    >
       <Meta title={name} description={`${totalPrice} $`} />
     </Card>
   );

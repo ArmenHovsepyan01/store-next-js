@@ -61,7 +61,8 @@ const Categories = () => {
           <div
             key={item.id}
             className={`${styles.category} ${item.id === +category ? styles.active : ''}`}
-            onClick={() => onCategoryClick(item.id)}>
+            onClick={() => onCategoryClick(item.id)}
+          >
             {item.category}
           </div>
         );

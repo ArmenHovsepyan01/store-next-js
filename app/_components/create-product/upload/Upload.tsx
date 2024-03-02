@@ -17,7 +17,8 @@ const App: React.FC<UploadProps> = ({ handleUploadChanges, removeFromFilesList }
       listType="picture"
       onChange={handleUploadChanges}
       onRemove={removeFromFilesList}
-      multiple={true}>
+      multiple={true}
+    >
       <Button icon={<UploadOutlined />}>Upload</Button>
     </Upload>
   </>

@@ -35,9 +35,10 @@ const MyStoreProducts: FC<MyStoreProductsProps> = ({ category }) => {
   return (
     <Flex
       gap={24}
-      style={{ padding: 24, overflowY: 'scroll', width: '100%' }}
+      style={{ padding: 24, overflowY: 'scroll', width: '100%', marginLeft: 200 }}
       wrap={'wrap'}
-      justify={'center'}>
+      justify={'center'}
+    >
       {products.length === 0 ? (
         <span>There is no products.</span>
       ) : (

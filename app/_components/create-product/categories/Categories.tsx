@@ -27,7 +27,8 @@ const Categories = () => {
     <Form.Item
       name="categoryId"
       label="Choose category"
-      rules={[{ required: true, message: 'Please select category.' }]}>
+      rules={[{ required: true, message: 'Please select category.' }]}
+    >
       <Select
         options={options}
         notFoundContent={options.length === 0 ? <Empty /> : ''}

@@ -50,11 +50,13 @@ const LoginForm = () => {
         name="normal_login"
         style={{ width: 400 }}
         initialValues={{ remember: true }}
-        onFinish={dis}>
+        onFinish={dis}
+      >
         <Form.Item
           name="email"
           rules={[{ required: true, message: 'Please input your email!' }]}
-          label="Email">
+          label="Email"
+        >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Email"
@@ -66,7 +68,8 @@ const LoginForm = () => {
         <Form.Item
           name="password"
           rules={[{ required: true, message: 'Please input your Password!' }]}
-          label="Password">
+          label="Password"
+        >
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
@@ -92,7 +95,8 @@ const LoginForm = () => {
               alignItems: 'center',
               justifyContent: 'center',
               color: 'red'
-            }}>
+            }}
+          >
             {errorMessage && <p>{errorMessage}</p>}
           </div>
         </Form.Item>

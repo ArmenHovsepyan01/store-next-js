@@ -63,6 +63,26 @@ const UserAvatar = () => {
       key: '2',
       label: (
         <>
+          {user.role === 'admin' && user.loggedIn ? (
+            <Flex align={'center'} justify={'center'}>
+              <Link href={'/dashboard'}>
+                <Button icon={<UserOutlined />}>Dashboard</Button>
+              </Link>
+            </Flex>
+          ) : (
+            <></>
+          )}
+        </>
+      ),
+      style: {
+        backgroundColor: 'transparent',
+        margin: 8
+      }
+    },
+    {
+      key: '3',
+      label: (
+        <>
           {user.loggedIn ? (
             <Flex align={'center'} justify={'center'}>
               <Link href={'/mystore'}>
@@ -76,7 +96,7 @@ const UserAvatar = () => {
       )
     },
     {
-      key: '3',
+      key: '4',
       label: (
         <Flex align={'center'} justify={'center'}>
           {user.loggedIn ? (

@@ -28,6 +28,25 @@ export const fetchAllProducts = createAsyncThunk('products/fetchAllProducts', as
   }
 });
 
+export const fetchAllProductsForAdmin = createAsyncThunk(
+  'products/fetchAllProductsAdmin',
+  async () => {
+    const token = Cookies.get('token');
+
+    try {
+      const response = await axios.get('/api/products', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      throw new Error('Error fetching products data.');
+    }
+  }
+);
+
 const productsSlice = createSlice({
   name: 'data',
   initialState,
@@ -53,13 +72,20 @@ const productsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
-      console.log(action);
-      return {
-        ...state,
-        data: action.payload.product
-      };
-    });
+    builder
+      .addCase(fetchAllProducts.fulfilled, (state, action) => {
+        console.log(action);
+        return {
+          ...state,
+          data: action.payload.product
+        };
+      })
+      .addCase(fetchAllProductsForAdmin.fulfilled, (state, action) => {
+        return {
+          ...state,
+          data: action.payload.product
+        };
+      });
   }
 });
 

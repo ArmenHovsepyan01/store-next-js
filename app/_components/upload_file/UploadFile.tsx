@@ -57,7 +57,8 @@ const UploadFile: React.FC<UploadFilesProps> = ({ setImage }) => {
         showUploadList={false}
         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         beforeUpload={beforeUpload}
-        onChange={handleChange}>
+        onChange={handleChange}
+      >
         {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
       </Upload>
     </>

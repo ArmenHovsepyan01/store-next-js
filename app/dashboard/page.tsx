@@ -14,14 +14,10 @@ const Dashboard = () => {
     setCategory(category);
   };
 
-  const data = useMemo(() => {
-    return [];
-  }, [category]);
-
   return (
     <Flex className={styles.dashboard}>
       <DashboardSider handleChangeOfCategory={handleChangeOfCategory} />
-      <Content />
+      <Content category={+category} />
     </Flex>
   );
 };

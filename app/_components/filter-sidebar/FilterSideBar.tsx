@@ -69,7 +69,8 @@ const FilterSideBar: FC<FilterSideBarProps> = ({ closeFilterSidebar, isOpen }) =
             onClick={() => {
               replace('/');
               closeFilterSidebar();
-            }}>
+            }}
+          >
             Clear All
           </Button>
         </Space>

@@ -1,9 +1,14 @@
-.layout {
-  margin-top: 70px;
-  height: calc(100vh - 70px);
-}
-
 .title {
   color: white;
   padding: 12px 16px;
+}
+
+.sider {
+  position: fixed;
+  height: 100ch;
+  background: #001628;
+}
+
+.mystore {
+  margin-top: 70px;
 }

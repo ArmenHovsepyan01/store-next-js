@@ -91,7 +91,8 @@ const ProductById: FC<ProductById> = ({ params: { productId } }) => {
                       height: 20,
                       borderRadius: 4
                     }}
-                    key={item.id}></div>
+                    key={item.id}
+                  ></div>
                 );
               })}
             </Flex>

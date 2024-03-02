@@ -49,7 +49,8 @@ const FilterByPrice: FC<FilterByPriceProps> = ({ closeFilterSideBar }) => {
 
             replace(`${pathname}?${params.toString()}`);
             closeFilterSideBar();
-          }}>
+          }}
+        >
           Apply
         </Button>
       </Flex>

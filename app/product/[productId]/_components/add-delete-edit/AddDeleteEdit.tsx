@@ -89,7 +89,8 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
             type={'primary'}
             icon={<DeleteFilled />}
             onClick={deleteProduct}
-            style={{ marginLeft: 12 }}>
+            style={{ marginLeft: 12 }}
+          >
             Delete
           </Button>
         </div>

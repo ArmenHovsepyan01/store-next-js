@@ -29,7 +29,8 @@ const GoBackButton: FC<GoBackButtonProps> = ({ path }) => {
         justifyContent: 'center',
         float: 'left'
       }}
-      onClick={goBack}></Button>
+      onClick={goBack}
+    ></Button>
   );
 };
 

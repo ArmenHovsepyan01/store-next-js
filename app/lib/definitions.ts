@@ -2,12 +2,11 @@ import { UploadFile } from 'antd';
 
 export interface Category {
   id: number;
-  name: string;
-  image: string;
+  category: string;
   creationAt: string;
   updatedAt: string;
 }
-// TODO: createdAt
+
 export interface Product {
   id: number;
   title: string;
@@ -71,6 +70,7 @@ export interface IProduct {
   price: number;
   isPublished: boolean;
   category: string;
+  category_id: number;
   main_img: string;
   images: ImagesArrayItem[];
   colors?: IColor[];
@@ -92,12 +92,16 @@ export interface CartItem {
   Product: IProduct;
 }
 
-interface IColor {
+export interface IColor {
   id: number;
   color: string;
+  creationAt: string;
+  updatedAt: string;
 }
 
-interface ISize {
+export interface ISize {
   id: number;
   size: string;
+  creationAt: string;
+  updatedAt: string;
 }

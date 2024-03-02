@@ -31,7 +31,8 @@ const Sizes = () => {
     <Form.Item
       name="sizes"
       label="Choose size."
-      rules={[{ required: true, message: 'Please select size.' }]}>
+      rules={[{ required: true, message: 'Please select size.' }]}
+    >
       <Select
         options={options}
         notFoundContent={options.length === 0 ? <Empty /> : ''}

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import Sider from 'antd/es/layout/Sider';
-import { Layout, Menu } from 'antd';
+import { Flex, Layout, Menu } from 'antd';
 
 import styles from '../styles/Mystore.module.scss';
 import MyStoreProducts from '@/app/mystore/_components/mystore-products/MyStoreProducts';
@@ -36,8 +36,8 @@ const MyStore = () => {
   };
 
   return (
-    <Layout className={styles.layout}>
-      <Sider trigger={null}>
+    <Flex className={styles.mystore}>
+      <Sider trigger={null} className={styles.sider}>
         <div className="demo-logo-vertical" />
         <h3 className={styles.title}>My Store</h3>
         <Menu
@@ -54,7 +54,7 @@ const MyStore = () => {
       ) : (
         <MyStoreProducts category={category} />
       )}
-    </Layout>
+    </Flex>
   );
 };
 
