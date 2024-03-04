@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { fetchAllProducts } from '@/app/lib/store/features/products/productsSlice';
 import ProductCart from '@/app/mystore/_components/mystore-products/product-cart/ProductCart';
 
-import { Flex } from 'antd';
+import { Divider, Flex } from 'antd';
 
 interface MyStoreProductsProps {
   category?: string;
@@ -33,19 +33,18 @@ const MyStoreProducts: FC<MyStoreProductsProps> = ({ category }) => {
   }, [category, data]);
 
   return (
-    <Flex
-      gap={24}
-      style={{ padding: 24, overflowY: 'scroll', width: '100%', marginLeft: 200 }}
-      wrap={'wrap'}
-      justify={'center'}
-    >
-      {products.length === 0 ? (
-        <span>There is no products.</span>
-      ) : (
-        products.map((product) => {
-          return <ProductCart product={product} key={product.id} />;
-        })
-      )}
+    <Flex vertical={true} style={{ padding: 24, width: '100%', marginLeft: 200 }}>
+      <h3>Products</h3>
+      <Divider />
+      <Flex gap={24} wrap={'wrap'} style={{ marginBottom: 48, padding: 24 }}>
+        {products.length === 0 ? (
+          <span>There is no products.</span>
+        ) : (
+          products.map((product) => {
+            return <ProductCart product={product} key={product.id} />;
+          })
+        )}
+      </Flex>
     </Flex>
   );
 };

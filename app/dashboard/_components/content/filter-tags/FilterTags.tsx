@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Flex, Tag } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import { setColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
@@ -28,6 +28,10 @@ const FilterTags = () => {
     id: null
   };
 
+  if (!color && !size && !category) {
+    return null;
+  }
+
   return (
     <Flex
       gap={12}
@@ -38,18 +42,24 @@ const FilterTags = () => {
       }}>
       <span>Filtered by:</span>
       {color && (
-        <Tag color={color?.color || 'green-inverse'} onClose={() => dispatch(setColor(resetAll))}>
-          {color.color}
+        <Tag
+          color={color?.color || 'green-inverse'}
+          onClose={() => dispatch(setColor(resetAll))}
+          closable={true}>
+          {`Color: ${color.color}`}
         </Tag>
       )}
       {size && (
-        <Tag color={'green-inverse'} onClose={() => dispatch(setSize(resetAll))}>
-          {size.size}
+        <Tag color={'green-inverse'} onClose={() => dispatch(setSize(resetAll))} closable={true}>
+          {`Size: ${size.size}`}
         </Tag>
       )}
       {category && (
-        <Tag color={'green-inverse'} onClose={() => dispatch(setCategory(resetAll))}>
-          {category.category}
+        <Tag
+          color={'green-inverse'}
+          onClose={() => dispatch(setCategory(resetAll))}
+          closable={true}>
+          {`Category: ${category.category}`}
         </Tag>
       )}
     </Flex>

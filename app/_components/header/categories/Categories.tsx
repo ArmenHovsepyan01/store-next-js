@@ -42,16 +42,8 @@ const Categories = () => {
   }, [params]);
 
   const onCategoryClick = (key: number) => {
-    const category: any = categories?.[key - 1];
-    message.info(`You select ${category?.category}`);
-
-    if (
-      pathname.includes('product') ||
-      pathname.includes('wishlist') ||
-      pathname.includes('mystore')
-    )
-      return replace(`/?categoryId=${key}`);
-    replace(`${pathname}?categoryId=${key}`);
+    return replace(`/?categoryId=${key}`);
+    // replace(`${pathname}?categoryId=${key}`);
   };
 
   return (
@@ -61,8 +53,7 @@ const Categories = () => {
           <div
             key={item.id}
             className={`${styles.category} ${item.id === +category ? styles.active : ''}`}
-            onClick={() => onCategoryClick(item.id)}
-          >
+            onClick={() => onCategoryClick(item.id)}>
             {item.category}
           </div>
         );

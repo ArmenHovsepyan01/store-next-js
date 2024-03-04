@@ -15,7 +15,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Flex className={styles.dashboard}>
+    <Flex className={styles.dashboard} align={'center'}>
       <DashboardSider handleChangeOfCategory={handleChangeOfCategory} />
       <Content category={+category} />
     </Flex>

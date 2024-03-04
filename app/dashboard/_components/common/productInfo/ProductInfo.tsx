@@ -12,6 +12,7 @@ import { useAppDispatch } from '@/app/lib/store/hooks';
 import { deleteColor, setColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
 import { deleteSize, setSize } from '@/app/lib/store/features/product-sizes/productSizesSlice';
 import CreateItem from '@/app/dashboard/_components/common/productInfo/create-item/CreateItem';
+import { walkTreeWithFlightRouterState } from 'next/dist/server/app-render/walk-tree-with-flight-router-state';
 
 interface IProductInfo {
   items: any;
@@ -55,65 +56,40 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
   );
 
   return (
-    <Flex align={'start'} justify={'center'} gap={12} vertical={true} className={styles.categories}>
-      <h3>{title}</h3>
-      <Space>
-        <Select
-          size={'large'}
-          value={selectedValue ? selectedValue : `${title}`}
-          placeholder={title}
-          style={{
-            width: 150,
-            textTransform: 'capitalize'
-          }}
-          onSelect={(info) => {
-            const value = items.find((item: any) => item.id === +info);
-            setSelectedValue(value[itemName]);
-
-            const payload = {
-              id: +info
-            };
-
-            if (title.toLowerCase() === 'categories') {
-              dispatch(setCategory(payload));
-            } else if (title.toLowerCase() === 'sizes') {
-              dispatch(setSize(payload));
-            } else {
-              dispatch(setColor(payload));
-            }
-          }}>
-          {items.map((item: any) => {
-            return (
-              <Select.Option key={item.id} value={item.id}>
-                <Tag color={'default'} closable={true} onClose={() => removeItem(item.id)}>
+    <Flex justify={'center'}>
+      <Flex gap={12} className={styles.categories} justify={'space-between'}>
+        <Flex vertical={true} style={{ height: '100%' }} gap={12}>
+          <h3>{title}</h3>
+          <Flex vertical={true} gap={12} style={{ overflow: 'auto', height: '100%' }}>
+            {items.map((item: any) => {
+              return (
+                <Tag
+                  color={'default'}
+                  closable={true}
+                  onClose={() => removeItem(item.id)}
+                  key={item.id}
+                  style={{
+                    fontSize: 16,
+                    padding: 8,
+                    textTransform: 'capitalize',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    justifyContent: 'space-between',
+                    minWidth: 120
+                  }}>
                   {item[itemName]}
                 </Tag>
-              </Select.Option>
-            );
-          })}
-        </Select>
+              );
+            })}
+          </Flex>
+        </Flex>
 
-        <Button
-          disabled={!selectedValue}
-          onClick={() => {
-            setSelectedValue('');
-            const payload = {
-              id: null
-            };
-
-            if (title.toLowerCase() === 'categories') {
-              dispatch(setCategory(payload));
-            } else if (title.toLowerCase() === 'sizes') {
-              dispatch(setSize(payload));
-            } else {
-              dispatch(setColor(payload));
-            }
-          }}>
-          Clear filter
-        </Button>
-      </Space>
-
-      <CreateItem itemName={itemName} endpoint={title.toLowerCase()} />
+        <Flex vertical={true} gap={12}>
+          <h3 className={styles.title}>Create {itemName}</h3>
+          <CreateItem itemName={itemName} endpoint={title.toLowerCase()} />
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

@@ -16,19 +16,6 @@ interface IContent {
 const Content: FC<IContent> = ({ category }) => {
   return (
     <Flex className={styles.dashboardContent} vertical={true}>
-      <h3>Dashboard</h3>
-      <Divider />
-      <Flex
-        gap={24}
-        justify={'space-between'}
-        align={'center'}
-        style={{ width: '100%', flexWrap: 'wrap' }}
-      >
-        <Categories />
-        <Sizes />
-        <Colors />
-      </Flex>
-      <Divider />
       <Products filterById={category} />
     </Flex>
   );

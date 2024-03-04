@@ -22,14 +22,11 @@ const Search = () => {
       params.delete('name');
     }
 
-    if (
-      pathname.includes('product') ||
-      pathname.includes('wishlist') ||
-      pathname.includes('mystore')
-    )
-      return replace(`/?${params.toString()}`);
-    replace(`${pathname}?${params.toString()}`);
+    return replace(`${pathname}?${params.toString()}`);
+
+    // replace(`/?${params.toString()}`);
   }, 1000);
+
   return (
     <Input
       onChange={searchByCategories}

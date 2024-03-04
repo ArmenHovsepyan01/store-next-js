@@ -63,11 +63,10 @@ const CreateItem: FC<ICreateItem> = ({ itemName, endpoint }) => {
 
   return (
     <Flex vertical={true}>
-      <span className={styles.title}>Create {itemName}</span>
       <Space size={'large'}>
         <Input placeholder={`Type ${itemName}`} value={value} onChange={handleValueChange} />
         <Button type={'primary'} onClick={createItem}>
-          Apply
+          Create
         </Button>
       </Space>
     </Flex>

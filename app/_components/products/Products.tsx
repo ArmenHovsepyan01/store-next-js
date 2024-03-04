@@ -8,6 +8,7 @@ import { getAllProducts } from '@/app/lib/data';
 import ProductsHeader from '@/app/_components/products/products-header/ProductsHeader';
 import CustomCard from '@/app/_components/custom-card/CustomCard';
 import { cookies } from 'next/headers';
+import FilteredBy from '@/app/_components/filtered-by/FilteredBy';
 
 interface ProductsProps {
   searchParams?: SearchParams;
@@ -40,6 +41,7 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
     <>
       <ProductsHeader />
       <Divider />
+      <FilteredBy />
       <Flex gap={24} wrap="wrap" align="center" justify="space-between" style={{ padding: 24 }}>
         {productsData?.length !== 0 ? (
           productsData?.map((item) => {

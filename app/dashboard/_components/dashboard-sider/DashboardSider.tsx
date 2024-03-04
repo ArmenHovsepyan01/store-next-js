@@ -24,11 +24,15 @@ const DashboardSider: FC<IDashboardSider> = ({ handleChangeOfCategory }) => {
       },
       {
         key: '2',
-        label: 'Published products'
+        label: 'Categories'
       },
       {
         key: '3',
-        label: 'Unpublished products'
+        label: 'Sizes'
+      },
+      {
+        key: '4',
+        label: 'Colors'
       }
     ];
   }, []);
@@ -42,8 +46,7 @@ const DashboardSider: FC<IDashboardSider> = ({ handleChangeOfCategory }) => {
           gap={12}
           style={{
             padding: 12
-          }}
-        >
+          }}>
           <Avatar icon={<UserOutlined />} className={styles.dashboardSiderAvatar} />
           <span className={styles.dashboardSiderAvatarName}>Admin</span>
         </Flex>
