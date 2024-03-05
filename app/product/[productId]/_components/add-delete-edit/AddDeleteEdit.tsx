@@ -70,7 +70,6 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
           isPublished: true
         })
       );
-      console.log(data);
     } catch (e) {
       message.warning('Oops something gone wrong try again.');
       console.error(e);
@@ -89,8 +88,7 @@ const AddDeleteEdit: FC<AddDeleteEditProps> = ({ product }) => {
             type={'primary'}
             icon={<DeleteFilled />}
             onClick={deleteProduct}
-            style={{ marginLeft: 12 }}
-          >
+            style={{ marginLeft: 12 }}>
             Delete
           </Button>
         </div>

@@ -7,12 +7,12 @@ export async function getAllProducts(query?: string, token?: string) {
   if (query) {
     url = `${url}?${query}`;
   }
-  console.log(query);
+
   try {
     const { data } = await axios.get(url);
     return data.product as IProduct[];
   } catch (e: any) {
-    console.log(e);
+    console.error(e.message);
   }
 }
 

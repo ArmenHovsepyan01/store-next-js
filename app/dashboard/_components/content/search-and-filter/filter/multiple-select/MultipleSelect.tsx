@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Flex, Select } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import {
@@ -50,6 +50,17 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
     return name + 's';
   };
 
+  const clearSelection = () => {
+    const payload = {
+      id: null
+    };
+
+    if (itemName === 'category') return dispatch(setCategory(payload));
+    if (itemName === 'size') return dispatch(setSize(payload));
+
+    dispatch(setColor(payload));
+  };
+
   return (
     <Flex gap={12} vertical={true}>
       <span style={{ textTransform: 'capitalize', fontSize: 16 }}>{getTitle(itemName)}</span>
@@ -57,10 +68,16 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
         style={{ textTransform: 'capitalize' }}
         placeholder={`Choose ${itemName}`}
         onSelect={setFilteredValue}
-        value={itemName === 'category' ? category : itemName === 'size' ? size : color}>
+        value={itemName === 'category' ? category : itemName === 'size' ? size : color}
+        allowClear={true}
+        onClear={clearSelection}>
         {items.map((item: any) => {
           return (
-            <Select.Option key={item.id} value={item.id} style={{ textTransform: 'capitalize' }}>
+            <Select.Option
+              key={item.id}
+              value={item.id}
+              style={{ textTransform: 'capitalize' }}
+              slectable={true}>
               {item[itemName]}
             </Select.Option>
           );

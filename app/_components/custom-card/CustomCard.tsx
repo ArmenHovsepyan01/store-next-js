@@ -62,6 +62,7 @@ const CustomCard: FC<CustomCardProps> = ({ product, token }) => {
             config
           );
         }
+
         dispatch(
           addToFavorites({
             product: {
@@ -107,8 +108,7 @@ const CustomCard: FC<CustomCardProps> = ({ product, token }) => {
                 setSrc('https://miro.medium.com/v2/resize:fit:1200/1*ylV603DJXpTpBsiGm4BcAQ.png');
               }}
             />
-          }
-        >
+          }>
           <Meta title={product.name} />
         </Card>
       </Link>

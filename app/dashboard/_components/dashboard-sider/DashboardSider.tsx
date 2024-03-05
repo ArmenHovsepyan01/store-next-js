@@ -8,6 +8,7 @@ import { Avatar, Flex, Menu, Space } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { UserOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+import Cookies from 'js-cookie';
 
 interface IDashboardSider {
   handleChangeOfCategory: (category: string) => void;

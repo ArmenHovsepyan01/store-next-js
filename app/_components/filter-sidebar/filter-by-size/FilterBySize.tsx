@@ -47,15 +47,12 @@ const FilterBySize: FC<FilterBySizeProps> = ({ closeFilterSideBar }) => {
 
     params.set('sizes', query);
 
-    console.log(query);
-
     if (query.trim()) router.replace(`${pathname}?${params.toString()}`);
 
     closeFilterSideBar();
   };
 
   const handleSizeChanges = (values: number[]) => {
-    console.log(values);
     setSize(values);
   };
 

@@ -15,7 +15,6 @@ interface MenuItem {
 }
 
 const Categories = () => {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 

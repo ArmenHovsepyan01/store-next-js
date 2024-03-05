@@ -55,7 +55,6 @@ const productsSlice = createSlice({
       state.data = action.payload.data;
     },
     deleteProductFromData: (state, action) => {
-      console.log(action.payload.id);
       state.data = state.data.filter((product) => product.id !== action.payload.id);
     },
     updateProduct: (state, action) => {
@@ -74,7 +73,6 @@ const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        console.log(action);
         return {
           ...state,
           data: action.payload.product

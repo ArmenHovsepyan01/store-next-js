@@ -113,15 +113,13 @@ const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
         borderRadius: 4,
         width: '100%',
         overflow: 'auto'
-      }}
-    >
+      }}>
       <Form
         layout={'vertical'}
         form={form}
         onFinish={createProduct}
         style={{ width: 400, marginTop: 20 }}
-        encType="multipart/form-data"
-      >
+        encType="multipart/form-data">
         <Form.Item>
           <Flex justify={'center'} align={'center'} vertical={true}>
             <h3>Create Product</h3>
@@ -130,29 +128,25 @@ const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
         <Form.Item
           name="name"
           label="Name"
-          rules={[{ required: true, message: 'Please fill the input.' }]}
-        >
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
           <Input placeholder="Name" />
         </Form.Item>
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: 'Please fill the input.' }]}
-        >
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
           <TextArea placeholder="Descripton" autoSize />
         </Form.Item>
         <Form.Item
           name="price"
           label="Price"
-          rules={[{ required: true, message: 'Please fill the input.' }]}
-        >
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
           <Input placeholder="Price" type={'number'} />
         </Form.Item>
         <Form.Item
           name="brand"
           label="Brand"
-          rules={[{ required: true, message: 'Please fill the input.' }]}
-        >
+          rules={[{ required: true, message: 'Please fill the input.' }]}>
           <Input placeholder="Brand" />
         </Form.Item>
         <Categories />
@@ -162,6 +156,7 @@ const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
           <Upload
             handleUploadChanges={handleMainImageChanges}
             removeFromFilesList={removeMainImage}
+            isManinImage={true}
           />
         </Form.Item>
         <Form.Item name="images" label="Other images">

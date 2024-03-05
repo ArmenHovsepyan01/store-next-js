@@ -42,7 +42,6 @@ const productColorsSlice = createSlice({
       state.selected = action.payload.id;
     },
     addColor: (state, action: PayloadAction<PayloadColor>) => {
-      console.log(action.payload.item);
       state.colors.push(action.payload.item);
     },
     deleteColor: (state, action: PayloadAction<ColorID>) => {

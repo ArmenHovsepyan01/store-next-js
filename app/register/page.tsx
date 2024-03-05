@@ -28,8 +28,6 @@ const Register = () => {
         password: password
       });
 
-      console.log(data);
-
       replace('/login');
     } catch (e: any) {
       return e.response.data.error.slice(6);
@@ -45,13 +43,11 @@ const Register = () => {
         name="normal_register"
         style={{ width: 400 }}
         initialValues={{ remember: true }}
-        onFinish={dispatch}
-      >
+        onFinish={dispatch}>
         <Form.Item
           name="name"
           rules={[{ required: true, message: 'Please input your name!' }]}
-          label="First name"
-        >
+          label="First name">
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="First name"
@@ -62,8 +58,7 @@ const Register = () => {
         <Form.Item
           name="lastname"
           rules={[{ required: true, message: 'Please input your lastname!' }]}
-          label="Last name"
-        >
+          label="Last name">
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Last name"
@@ -74,8 +69,7 @@ const Register = () => {
         <Form.Item
           name="email"
           rules={[{ required: true, message: 'Please input your email!' }]}
-          label="Email"
-        >
+          label="Email">
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Email"
@@ -88,8 +82,7 @@ const Register = () => {
           name="password"
           rules={[{ required: true, message: 'Please input your Password!' }]}
           label="Password"
-          hasFeedback={true}
-        >
+          hasFeedback={true}>
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
@@ -115,8 +108,7 @@ const Register = () => {
                 return Promise.reject(new Error('The new password that you entered do not match!'));
               }
             })
-          ]}
-        >
+          ]}>
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"

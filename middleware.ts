@@ -5,7 +5,6 @@ export default async function middleware(req: NextRequest) {
   let loggedIn = req.cookies.get('token');
 
   const { pathname, searchParams } = req.nextUrl;
-  console.log(pathname, req.cookies.get('checked'));
 
   if (pathname === '/api/auth/error') {
     return NextResponse.redirect(new URL('/login', req.url));

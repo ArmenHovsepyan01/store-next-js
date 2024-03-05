@@ -33,8 +33,8 @@ const ProductCart: FC<ProductCartProps> = ({ product }) => {
           Authorization: `Bearer ${Cookies.get('token')}`
         }
       });
+
       dispatch(deleteProductFromData({ id: product.id }));
-      console.log(data);
     } catch (e: any) {
       throw new Error(e);
     }
@@ -71,7 +71,6 @@ const ProductCart: FC<ProductCartProps> = ({ product }) => {
           }
         })
       );
-      console.log(data);
     } catch (e) {
       message.warning('Oops something gone wrong try again.');
       console.error(e);
@@ -107,8 +106,7 @@ const ProductCart: FC<ProductCartProps> = ({ product }) => {
             preview={false}
             onClick={() => replace(`/product/${product.id}`)}
           />
-        }
-      >
+        }>
         <Meta title={product.name} description={`${product.price} $`} />
       </Card>
       {isOpen && <EditModal closeModal={closeEditModal} currentProduct={product} />}

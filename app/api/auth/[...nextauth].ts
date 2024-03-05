@@ -16,7 +16,6 @@ const options: AuthOptions = {
         });
 
         if (data.access_token) {
-          console.log(data);
           return data.access_token;
         }
       }

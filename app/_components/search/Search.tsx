@@ -17,7 +17,6 @@ const Search = () => {
     if (value) {
       params.set('name', value);
       params.delete('page');
-      console.log(params.toString());
     } else {
       params.delete('name');
     }

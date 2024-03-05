@@ -13,7 +13,6 @@ interface ISearchAndFilter {
     unpublishedIsSelected: boolean;
   };
   resetProductState: () => void;
-  title: string;
 }
 
 const SearchAndFilter: FC<ISearchAndFilter> = ({

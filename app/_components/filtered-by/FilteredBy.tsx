@@ -6,6 +6,10 @@ interface IFilteredBy {
 }
 
 const FilteredBy: FC<IFilteredBy> = ({ searchParams }) => {
+  if (searchParams) {
+    const keys = Object.keys(searchParams);
+  }
+
   return <div></div>;
 };
 

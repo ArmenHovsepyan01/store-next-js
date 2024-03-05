@@ -45,7 +45,6 @@ const AddToCart: React.FC<IAddToCart> = ({ productId }) => {
         );
 
         message.success('You successfully added product to your cart.');
-        console.log(data);
       }
     } catch (e: any) {
       throw new Error(e);

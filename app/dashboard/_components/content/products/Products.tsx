@@ -111,7 +111,6 @@ const Products: FC<IProducts> = ({ filterById }) => {
         <h3>All products</h3>
         <Divider />
         <SearchAndFilter
-          title={title}
           resetProductState={resetProductState}
           setTitle={setTitle}
           togglePublishedButton={togglePublishedButton}

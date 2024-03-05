@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 
-import { Avatar, Button, Flex, MenuProps } from 'antd';
+import { Avatar, Button, Flex, MenuProps, Space } from 'antd';
 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -35,6 +35,7 @@ const UserAvatar = () => {
   }, [dispatch]);
 
   const logoutUser = () => {
+    console.log(true, 'logout');
     Cookies.remove('token');
     Cookies.remove('checked');
     dispatch(
@@ -49,11 +50,7 @@ const UserAvatar = () => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: (
-        <Flex align={'center'} justify={'center'}>
-          <h3>{user.loggedIn ? `${user.firstName} ${user.lastName}` : 'Guest'}</h3>
-        </Flex>
-      ),
+      label: <h3>{user.loggedIn ? `${user.firstName} ${user.lastName}` : 'Guest'}</h3>,
       style: {
         backgroundColor: 'transparent',
         margin: 8
@@ -61,55 +58,35 @@ const UserAvatar = () => {
     },
     {
       key: '2',
+      icon: user.loggedIn ? <UserOutlined /> : <></>,
       label: (
         <>
           {user.role === 'admin' && user.loggedIn ? (
-            <Flex align={'center'} justify={'center'}>
-              <Link href={'/dashboard'}>
-                <Button icon={<UserOutlined />}>Dashboard</Button>
-              </Link>
-            </Flex>
+            <Link href={'/dashboard'}>
+              <span>Dashboard</span>
+            </Link>
           ) : (
             <></>
           )}
         </>
-      ),
-      style: {
-        backgroundColor: 'transparent',
-        margin: 8
-      }
+      )
     },
     {
       key: '3',
-      label: (
-        <>
-          {user.loggedIn ? (
-            <Flex align={'center'} justify={'center'}>
-              <Link href={'/mystore'}>
-                <Button icon={<ShoppingCartOutlined />}>My store</Button>
-              </Link>
-            </Flex>
-          ) : (
-            <></>
-          )}
-        </>
-      )
+      icon: user.loggedIn ? <ShoppingCartOutlined /> : <></>,
+      label: <>{user.loggedIn ? <Link href={'/mystore'}>My store</Link> : <></>}</>
     },
     {
       key: '4',
-      label: (
-        <Flex align={'center'} justify={'center'}>
-          {user.loggedIn ? (
-            <Button onClick={logoutUser} icon={<PoweroffOutlined className="icon" />}>
-              Log out
-            </Button>
-          ) : (
-            <Link href={'/login'}>
-              <Button icon={<LoginOutlined />}>Log in</Button>
-            </Link>
-          )}
-        </Flex>
-      )
+      icon: user.loggedIn ? <PoweroffOutlined className="icon" /> : <LoginOutlined />,
+      label: user.loggedIn ? (
+        <Link onClick={logoutUser} href={''}>
+          Log out
+        </Link>
+      ) : (
+        <Link href={'/login'}>Log in</Link>
+      ),
+      danger: user.loggedIn
     }
   ];
 

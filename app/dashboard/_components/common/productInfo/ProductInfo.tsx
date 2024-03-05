@@ -22,10 +22,9 @@ interface IProductInfo {
 
 const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
   const dispatch = useAppDispatch();
-  const [selectedValue, setSelectedValue] = useState<string>('');
 
   const removeItem = useCallback(
-    async (id: number) => {
+    async (id: number, name: string) => {
       try {
         const { data } = await axios.delete(`api/${title.toLowerCase()}/${id}`, {
           headers: {
@@ -45,49 +44,53 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
           dispatch(deleteColor(payload));
         }
 
-        message.success(`${data.message}`);
-        setSelectedValue('');
+        message.success(
+          data.message.includes('deleted')
+            ? `${itemName} ${name} deleted successfully.`
+            : data.message
+        );
       } catch (e: any) {
         console.error(e);
         message.error(e.message);
       }
     },
-    [dispatch, title]
+    [dispatch, title, itemName]
   );
 
   return (
     <Flex justify={'center'}>
-      <Flex gap={12} className={styles.categories} justify={'space-between'}>
-        <Flex vertical={true} style={{ height: '100%' }} gap={12}>
-          <h3>{title}</h3>
-          <Flex vertical={true} gap={12} style={{ overflow: 'auto', height: '100%' }}>
-            {items.map((item: any) => {
-              return (
-                <Tag
-                  color={'default'}
-                  closable={true}
-                  onClose={() => removeItem(item.id)}
-                  key={item.id}
-                  style={{
-                    fontSize: 16,
-                    padding: 8,
-                    textTransform: 'capitalize',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4,
-                    justifyContent: 'space-between',
-                    minWidth: 120
-                  }}>
-                  {item[itemName]}
-                </Tag>
-              );
-            })}
-          </Flex>
-        </Flex>
-
+      <Flex className={styles.categories} justify={'space-between'} vertical={true} gap={24}>
         <Flex vertical={true} gap={12}>
           <h3 className={styles.title}>Create {itemName}</h3>
           <CreateItem itemName={itemName} endpoint={title.toLowerCase()} />
+        </Flex>
+        <Flex vertical={true} style={{ height: '100%' }} gap={12}>
+          <h3>{title}</h3>
+          <Flex vertical={true} gap={12}>
+            {items.length !== 0
+              ? items.map((item: any) => {
+                  return (
+                    <Tag
+                      color={'default'}
+                      closable={true}
+                      onClose={() => removeItem(item.id, item[itemName])}
+                      key={item.id}
+                      style={{
+                        fontSize: 16,
+                        padding: 8,
+                        textTransform: 'capitalize',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        justifyContent: 'space-between',
+                        minWidth: 120
+                      }}>
+                      {item[itemName]}
+                    </Tag>
+                  );
+                })
+              : `${title} list are empty.`}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

@@ -12,7 +12,6 @@ import { setAllData } from '@/app/lib/store/features/favorites/favoritesSlice';
 
 const Favorites = () => {
   const favorites = useAppSelector((state) => state.favorites.items);
-  const user = useAppSelector((state) => state.user);
   const [favoritesBadges, setCartBadges] = useState<number>(0);
   const fetchedData = useRef(false);
   const dispatch = useAppDispatch();
@@ -50,7 +49,6 @@ const Favorites = () => {
           }
         } catch (e: any) {
           console.error(e);
-          throw new Error(e);
         }
       })();
     }

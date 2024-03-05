@@ -31,6 +31,8 @@ const CreateItem: FC<ICreateItem> = ({ itemName, endpoint }) => {
 
   const createItem = async () => {
     try {
+      if (!value.trim()) return message.warning(`Please fill input then create ${itemName}.`);
+
       const body = {
         [itemName]: value
       };
@@ -62,13 +64,11 @@ const CreateItem: FC<ICreateItem> = ({ itemName, endpoint }) => {
   };
 
   return (
-    <Flex vertical={true}>
-      <Space size={'large'}>
-        <Input placeholder={`Type ${itemName}`} value={value} onChange={handleValueChange} />
-        <Button type={'primary'} onClick={createItem}>
-          Create
-        </Button>
-      </Space>
+    <Flex gap={12}>
+      <Input placeholder={`Type ${itemName}`} value={value} onChange={handleValueChange} />
+      <Button type={'primary'} onClick={createItem}>
+        Create
+      </Button>
     </Flex>
   );
 };
