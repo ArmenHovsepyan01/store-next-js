@@ -3,6 +3,8 @@ import { UploadFile } from 'antd';
 export interface Category {
   id: number;
   category: string;
+  parent_id?: number;
+  subcategories: Category[];
   creationAt: string;
   updatedAt: string;
 }
@@ -53,7 +55,7 @@ export interface FormValues {
   name: string;
   price: string;
   description: string;
-  categoryId: string | number;
+  categoryId: (string | number)[] | number;
   main_image: UploadFile;
   brand: string;
   color: string | number;
@@ -104,4 +106,16 @@ export interface ISize {
   size: string;
   creationAt: string;
   updatedAt: string;
+}
+
+export interface IAddress {
+  id?: number;
+  country: string;
+  state: string;
+  city: string;
+  zip_code: string;
+  street_address: string;
+  user_id?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

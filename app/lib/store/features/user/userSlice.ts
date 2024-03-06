@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
+import { IAddress } from '@/app/lib/definitions';
 
 export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => {
   const token = Cookies.get('token');
@@ -34,6 +35,7 @@ interface UserLoggedIn {
   lastName?: string;
   role?: string;
   email?: string;
+  addresses: IAddress[];
 }
 
 const initialState: UserLoggedIn = {
@@ -46,6 +48,21 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<UserLoggedIn>) => {
       state.loggedIn = action.payload.loggedIn;
+    },
+    setAddresses: (state, action) => {
+      return {
+        ...state,
+        addresses: [...action.payload.addresses]
+      };
+    },
+    addAddress: (state, action: PayloadAction<{ address: IAddress }>) => {
+      state.addresses.push(action.payload.address);
+    },
+    removeAddress: (state, action: PayloadAction<{ id: number }>) => {
+      return {
+        ...state,
+        addresses: state.addresses.filter((item) => item.id !== action.payload.id)
+      };
     }
   },
   extraReducers: (builder) => {
@@ -55,5 +72,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setAddresses, removeAddress, addAddress } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Flex, message } from 'antd';
-import { categoryMenu } from '@/app/lib/dropdownMenus';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Flex } from 'antd';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import styles from '../../../styles/Categories.module.scss';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import { fetchProductCategories } from '../../../lib/store/features/product-categories/productCategoriesSlice';
+import { fetchProductCategories } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
+import { Category } from '@/app/lib/definitions';
+import MenuItems from '@/app/_components/header/categories/menu-items/MenuItems';
 
 interface MenuItem {
   key: string;
@@ -42,20 +43,12 @@ const Categories = () => {
 
   const onCategoryClick = (key: number) => {
     return replace(`/?categoryId=${key}`);
-    // replace(`${pathname}?categoryId=${key}`);
   };
 
   return (
     <Flex gap={24} style={{ height: '100%' }} align={'center'}>
       {categories?.map((item) => {
-        return (
-          <div
-            key={item.id}
-            className={`${styles.category} ${item.id === +category ? styles.active : ''}`}
-            onClick={() => onCategoryClick(item.id)}>
-            {item.category}
-          </div>
-        );
+        return <MenuItems category={item} key={item.id} onCategoryClick={onCategoryClick} />;
       })}
     </Flex>
   );

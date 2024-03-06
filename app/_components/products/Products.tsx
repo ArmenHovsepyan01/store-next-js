@@ -1,4 +1,4 @@
-import { IData, IProduct, SearchParams } from '@/app/lib/definitions';
+import { SearchParams } from '@/app/lib/definitions';
 
 import { FC } from 'react';
 

@@ -7,6 +7,7 @@ import productsCategoriesReducer from './features/product-categories/productCate
 import productColorsReducer from './features/product-colors/productColorsSlice';
 import productSizesReducer from './features/product-sizes/productSizesSlice';
 import cartReducer from './features/cart/cartSlice';
+import addressesReducer from '@/app/lib/store/features/addresses/addressesSlice';
 
 export const makeStore = () => {
   return configureStore({
@@ -18,7 +19,8 @@ export const makeStore = () => {
       productCategories: productsCategoriesReducer,
       productColors: productColorsReducer,
       productSizes: productSizesReducer,
-      cart: cartReducer
+      cart: cartReducer,
+      addresses: addressesReducer
     }
   });
 };

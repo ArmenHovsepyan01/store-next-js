@@ -44,7 +44,9 @@ const CreateProduct: FC<CreateProductProps> = ({ handleCategoryChange }) => {
         ...values,
         main_image: file!,
         images: files!,
-        user_id: user.id
+        user_id: user.id,
+        // @ts-ignore
+        categoryId: +values.categoryId[values.categoryId.length - 1]
       };
 
       const formData = appendFormData(formValues);

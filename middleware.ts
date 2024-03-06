@@ -19,6 +19,10 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
+  if (!loggedIn?.value && pathname === '/addresses') {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
   return NextResponse.next();
 }
 
