@@ -1,18 +1,20 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { Cascader, Empty } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import { fetchProductCategories } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
-import { Cascader, Empty, Form } from 'antd';
 import { Category } from '@/app/lib/definitions';
+import { setCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
 
-const Categories = () => {
+const CategoriesCascader = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state) => state.productCategories.categories);
 
-  useEffect(() => {
-    (async () => {
-      await dispatch(fetchProductCategories());
-    })();
-  }, [dispatch]);
+  const setCategoryID = (category: string) => {
+    dispatch(
+      setCategory({
+        id: +category
+      })
+    );
+  };
 
   const options = useMemo(() => {
     return categories.map((item) => {
@@ -36,18 +38,28 @@ const Categories = () => {
 
   const items = createSelectionTree(categories);
 
+  const clearSelection = () => {
+    dispatch(
+      setCategory({
+        id: null
+      })
+    );
+  };
+
   return (
-    <Form.Item
-      name="categoryId"
-      label="Choose category"
-      rules={[{ required: true, message: 'Please select category.' }]}>
-      <Cascader
-        options={items}
-        placeholder={'Select category'}
-        notFoundContent={options.length === 0 ? <Empty /> : ''}
-      />
-    </Form.Item>
+    <Cascader
+      style={{ width: '100%' }}
+      options={items}
+      placeholder={'Choose category'}
+      notFoundContent={options.length === 0 ? <Empty /> : ''}
+      onClear={clearSelection}
+      onChange={(info) => {
+        if (info) {
+          setCategoryID(info[info.length - 1].toString());
+        }
+      }}
+    />
   );
 };
 
-export default Categories;
+export default CategoriesCascader;

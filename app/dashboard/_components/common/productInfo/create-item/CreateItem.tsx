@@ -7,7 +7,7 @@ import { Button, Flex, Input, message, Space } from 'antd';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import { useAppDispatch } from '@/app/lib/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
 import { addColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
 import { addCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
@@ -22,6 +22,7 @@ interface ICreateItem {
 
 const CreateItem: FC<ICreateItem> = ({ itemName, endpoint }) => {
   const [value, setValue] = useState<string>('');
+  const selectedCategory = useAppSelector((state) => state.productCategories.selected);
 
   const dispatch = useAppDispatch();
 
@@ -36,6 +37,10 @@ const CreateItem: FC<ICreateItem> = ({ itemName, endpoint }) => {
       const body = {
         [itemName]: value
       };
+
+      if (itemName === 'category' && selectedCategory) {
+        body.parent_id = selectedCategory.toString();
+      }
 
       const { data } = await axios.post(`/api/${endpoint}`, body, {
         headers: {

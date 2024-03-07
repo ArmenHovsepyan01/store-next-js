@@ -44,10 +44,69 @@ const productCategoriesSlice = createSlice({
       state.selected = action.payload.id;
     },
     addCategory: (state, action: PayloadAction<PayloadItem>) => {
-      state.categories.push(action.payload.item);
+      function updateCategories(categories: Category[], id: number, item: any): Category[] {
+        return categories.map((category) => {
+          if (category.id === id) {
+            return { ...category, subcategories: [...category.subcategories, item] };
+          } else if (category.subcategories) {
+            const updatedSubcategories = updateCategories(category.subcategories, id, item);
+            return { ...category, subcategories: updatedSubcategories };
+          } else {
+            return category;
+          }
+        });
+      }
+
+      function updateSubcategories(
+        categories: Category[],
+        parentId: number,
+        item: any
+      ): Category | null {
+        for (const category of categories) {
+          if (category.id === parentId) {
+            return { ...category, subcategories: [...category?.subcategories, item] };
+          } else if (category?.subcategories) {
+            const updatedCategory = updateSubcategories(category?.subcategories, parentId, item);
+            if (updatedCategory) {
+              return updatedCategory;
+            }
+          }
+        }
+
+        return null;
+      }
+
+      const updatedCategory = updateSubcategories(
+        JSON.parse(JSON.stringify(state.categories)),
+        +action.payload.item.parent_id,
+        action.payload.item
+      );
+
+      if (!updatedCategory) {
+        state.categories.push(action.payload.item);
+      } else {
+        state.categories = updateCategories(
+          JSON.parse(JSON.stringify(state.categories)),
+          +action.payload.item.parent_id,
+          action.payload.item
+        );
+      }
     },
     deleteCategory: (state, action: PayloadAction<CategoryID>) => {
-      state.categories = state.categories.filter((item) => item.id !== action.payload.id);
+      function deleteFromCategories(arr: Category[], id: number): Category[] {
+        return arr
+          .filter((el) => el.id !== id)
+          .map((el) => {
+            if (!el.subcategories || !Array.isArray(el.subcategories)) return el;
+            el.subcategories = deleteFromCategories(el.subcategories, id);
+            return el;
+          });
+      }
+
+      state.categories = deleteFromCategories(
+        JSON.parse(JSON.stringify(state.categories)),
+        action.payload.id
+      );
       state.selected = null;
     }
   },

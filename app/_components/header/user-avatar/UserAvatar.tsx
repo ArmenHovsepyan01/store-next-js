@@ -40,7 +40,8 @@ const UserAvatar = () => {
     Cookies.remove('checked');
     dispatch(
       setUser({
-        loggedIn: false
+        loggedIn: false,
+        addresses: []
       })
     );
 
@@ -58,7 +59,7 @@ const UserAvatar = () => {
     },
     {
       key: '2',
-      icon: user.loggedIn ? <UserOutlined /> : <></>,
+      icon: user.loggedIn && user.role === 'admin' ? <UserOutlined /> : <></>,
       label: (
         <>
           {user.role === 'admin' && user.loggedIn ? (
@@ -78,7 +79,13 @@ const UserAvatar = () => {
     },
     {
       key: '4',
-      label: user.loggedIn ? <Link href={'/addresses'}>Addresses</Link> : <></>
+      label: user.loggedIn ? (
+        <Link href={'/addresses'} style={{ paddingLeft: 24 }}>
+          Addresses
+        </Link>
+      ) : (
+        <></>
+      )
     },
     {
       key: '5',

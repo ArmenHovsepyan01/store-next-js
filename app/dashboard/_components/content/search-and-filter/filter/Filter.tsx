@@ -1,13 +1,16 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Button, Drawer, Flex } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+
 import MultipleSelect from '@/app/dashboard/_components/content/search-and-filter/filter/multiple-select/MultipleSelect';
+
 import { setColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
 import { setSize } from '@/app/lib/store/features/product-sizes/productSizesSlice';
 import { setCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
+
 import ProductsFilter from '@/app/dashboard/_components/content/search-and-filter/filter/products-filter/ProductsFilter';
 
 interface IFilter {

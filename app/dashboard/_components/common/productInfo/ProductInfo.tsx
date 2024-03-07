@@ -1,18 +1,20 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Button, Divider, Flex, Input, message, Select, Space, Tag } from 'antd';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
+
+import { Button, Checkbox, Collapse, Flex, message, Space, Tag, TreeSelect } from 'antd';
+
 import styles from '@/app/styles/Dashboard.module.scss';
-import { AppstoreAddOutlined, SyncOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {
-  deleteCategory,
-  setCategory
-} from '@/app/lib/store/features/product-categories/productCategoriesSlice';
-import { useAppDispatch } from '@/app/lib/store/hooks';
-import { deleteColor, setColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
-import { deleteSize, setSize } from '@/app/lib/store/features/product-sizes/productSizesSlice';
+
+import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+
+import { deleteCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
+import { deleteColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
+import { deleteSize } from '@/app/lib/store/features/product-sizes/productSizesSlice';
+
 import CreateItem from '@/app/dashboard/_components/common/productInfo/create-item/CreateItem';
-import { walkTreeWithFlightRouterState } from 'next/dist/server/app-render/walk-tree-with-flight-router-state';
+import { DeleteOutlined } from '@ant-design/icons';
+import ExtraIcons from '@/app/dashboard/_components/content/categories/extra-icons/ExtraIcons';
 
 interface IProductInfo {
   items: any;
@@ -36,9 +38,7 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
           id
         };
 
-        if (title.toLowerCase() === 'categories') {
-          dispatch(deleteCategory(payload));
-        } else if (title.toLowerCase() === 'sizes') {
+        if (title.toLowerCase() === 'sizes') {
           dispatch(deleteSize(payload));
         } else {
           dispatch(deleteColor(payload));
@@ -57,6 +57,26 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
     [dispatch, title, itemName]
   );
 
+  function generateCollapseItems(data: any) {
+    return data.map((item: any) => ({
+      key: item.id.toString(),
+      label: item.category,
+      extra: <ExtraIcons id={item.id} />,
+      children:
+        item?.subcategories?.length > 0 ? (
+          <Collapse
+            items={generateCollapseItems(item.subcategories)}
+            key={item.id}
+            destroyInactivePanel={true}
+          />
+        ) : null
+    }));
+  }
+
+  const collapseItems = itemName === 'category' ? generateCollapseItems(items) : null;
+
+  console.log(collapseItems);
+
   return (
     <Flex justify={'center'}>
       <Flex className={styles.categories} justify={'space-between'} vertical={true} gap={24}>
@@ -66,31 +86,34 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
         </Flex>
         <Flex vertical={true} style={{ height: '100%' }} gap={12}>
           <h3>{title}</h3>
-          <Flex vertical={true} gap={12}>
-            {items.length !== 0
-              ? items.map((item: any) => {
-                  return (
-                    <Tag
-                      color={'default'}
-                      closable={true}
-                      onClose={() => removeItem(item.id, item[itemName])}
-                      key={item.id}
-                      style={{
-                        fontSize: 16,
-                        padding: 8,
-                        textTransform: 'capitalize',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        justifyContent: 'space-between',
-                        minWidth: 120
-                      }}>
-                      {item[itemName]}
-                    </Tag>
-                  );
-                })
-              : `${title} list are empty.`}
-          </Flex>
+          {!collapseItems && (
+            <Flex vertical={true} gap={12}>
+              {items.length !== 0
+                ? items.map((item: any) => {
+                    return (
+                      <Tag
+                        color={'default'}
+                        closable={true}
+                        onClose={() => removeItem(item.id, item[itemName])}
+                        key={item.id}
+                        style={{
+                          fontSize: 16,
+                          padding: 8,
+                          textTransform: 'capitalize',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 4,
+                          justifyContent: 'space-between',
+                          minWidth: 120
+                        }}>
+                        {item[itemName]}
+                      </Tag>
+                    );
+                  })
+                : `${title} list are empty.`}
+            </Flex>
+          )}
+          <Collapse items={collapseItems} />
         </Flex>
       </Flex>
     </Flex>

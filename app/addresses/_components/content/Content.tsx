@@ -4,12 +4,13 @@ import YourAddresses from '@/app/addresses/_components/content/your-addresses/Yo
 
 interface IContent {
   category: string;
+  setCategory: (category: string) => void;
 }
 
-const Content: FC<IContent> = ({ category }) => {
+const Content: FC<IContent> = ({ category, setCategory }) => {
   if (category === '1') return <YourAddresses />;
 
-  return <CreateAddressForm />;
+  return <CreateAddressForm setCategory={setCategory} />;
 };
 
 export default Content;

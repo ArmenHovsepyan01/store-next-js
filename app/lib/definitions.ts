@@ -116,6 +116,7 @@ export interface IAddress {
   zip_code: string;
   street_address: string;
   user_id?: number;
+  isDefault?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

@@ -8,7 +8,7 @@ interface IMenuItems {
 }
 
 const MenuItems: FC<IMenuItems> = ({ category, onCategoryClick }) => {
-  function convertToTreeData(data: Category) {
+  function convertToTreeData(data: Category): any {
     const items = {
       key: data.id.toString(),
       type: data.parent_id === null ? 'group' : 'sub menu',

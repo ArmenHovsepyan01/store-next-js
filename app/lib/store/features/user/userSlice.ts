@@ -39,7 +39,8 @@ interface UserLoggedIn {
 }
 
 const initialState: UserLoggedIn = {
-  loggedIn: false
+  loggedIn: false,
+  addresses: []
 };
 
 const userSlice = createSlice({
@@ -58,6 +59,33 @@ const userSlice = createSlice({
     addAddress: (state, action: PayloadAction<{ address: IAddress }>) => {
       state.addresses.push(action.payload.address);
     },
+    setDefaultAddress: (state, action: PayloadAction<{ id: number }>) => {
+      state.addresses = state.addresses.map((item) => {
+        if (item.id === action.payload.id) {
+          return {
+            ...item,
+            isDefault: true
+          };
+        }
+
+        return {
+          ...item,
+          isDefault: false
+        };
+      });
+    },
+    updateAddress: (state, action: PayloadAction<{ addresses: IAddress }>) => {
+      state.addresses = state.addresses.map((item) => {
+        if (item.id === action.payload.addresses.id) {
+          return {
+            ...item,
+            ...action.payload.addresses
+          };
+        }
+
+        return item;
+      });
+    },
     removeAddress: (state, action: PayloadAction<{ id: number }>) => {
       return {
         ...state,
@@ -72,5 +100,12 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUser, setAddresses, removeAddress, addAddress } = userSlice.actions;
+export const {
+  setUser,
+  setAddresses,
+  removeAddress,
+  addAddress,
+  updateAddress,
+  setDefaultAddress
+} = userSlice.actions;
 export default userSlice.reducer;

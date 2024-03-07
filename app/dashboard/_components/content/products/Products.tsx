@@ -1,17 +1,12 @@
 'use client';
 
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { Divider, Flex, Space, Tag } from 'antd';
+import { Divider, Flex, Space } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import {
-  fetchAllProducts,
-  fetchAllProductsForAdmin
-} from '@/app/lib/store/features/products/productsSlice';
+import { fetchAllProductsForAdmin } from '@/app/lib/store/features/products/productsSlice';
 import ProductCart from '@/app/mystore/_components/mystore-products/product-cart/ProductCart';
 
 import styles from '../../../../styles/DashboardProducts.module.scss';
-import { createMutableActionQueue } from 'next/dist/shared/lib/router/action-queue';
-import FilterTags from '@/app/dashboard/_components/content/filter-tags/FilterTags';
 import SearchAndFilter from '@/app/dashboard/_components/content/search-and-filter/SearchAndFilter';
 import Categories from '@/app/dashboard/_components/content/categories/Categories';
 import Sizes from '@/app/dashboard/_components/content/sizes/Sizes';

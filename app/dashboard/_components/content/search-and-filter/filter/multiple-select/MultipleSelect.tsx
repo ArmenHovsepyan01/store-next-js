@@ -1,15 +1,22 @@
-import React, { FC, useEffect, useState } from 'react';
+'use client';
+
+import React, { FC, useEffect } from 'react';
+
 import { Flex, Select } from 'antd';
+
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
+
 import {
   fetchProductColors,
   setColor
 } from '@/app/lib/store/features/product-colors/productColorsSlice';
+
 import {
   fetchProductSizes,
   setSize
 } from '@/app/lib/store/features/product-sizes/productSizesSlice';
-import { setCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
+
+import CategoriesCascader from '@/app/_components/common/categories-cascader/CategoriesCascader';
 
 interface IMultipleSelect {
   items: any;
@@ -21,7 +28,6 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
 
   const color = useAppSelector((state) => state.productColors.selected);
   const size = useAppSelector((state) => state.productSizes.selected);
-  const category = useAppSelector((state) => state.productCategories.selected);
 
   useEffect(() => {
     if (process.browser) {
@@ -38,7 +44,6 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
       id
     };
 
-    if (itemName === 'category') return dispatch(setCategory(payload));
     if (itemName === 'size') return dispatch(setSize(payload));
 
     dispatch(setColor(payload));
@@ -55,7 +60,6 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
       id: null
     };
 
-    if (itemName === 'category') return dispatch(setCategory(payload));
     if (itemName === 'size') return dispatch(setSize(payload));
 
     dispatch(setColor(payload));
@@ -64,25 +68,29 @@ const MultipleSelect: FC<IMultipleSelect> = ({ items, itemName }) => {
   return (
     <Flex gap={12} vertical={true}>
       <span style={{ textTransform: 'capitalize', fontSize: 16 }}>{getTitle(itemName)}</span>
-      <Select
-        style={{ textTransform: 'capitalize' }}
-        placeholder={`Choose ${itemName}`}
-        onSelect={setFilteredValue}
-        value={itemName === 'category' ? category : itemName === 'size' ? size : color}
-        allowClear={true}
-        onClear={clearSelection}>
-        {items.map((item: any) => {
-          return (
-            <Select.Option
-              key={item.id}
-              value={item.id}
-              style={{ textTransform: 'capitalize' }}
-              slectable={true}>
-              {item[itemName]}
-            </Select.Option>
-          );
-        })}
-      </Select>
+      {itemName === 'category' ? (
+        <CategoriesCascader />
+      ) : (
+        <Select
+          style={{ textTransform: 'capitalize' }}
+          placeholder={`Choose ${itemName}`}
+          onSelect={setFilteredValue}
+          value={itemName === 'size' ? size : color}
+          allowClear={true}
+          onClear={clearSelection}>
+          {items.map((item: any) => {
+            return (
+              <Select.Option
+                key={item.id}
+                value={item.id}
+                style={{ textTransform: 'capitalize' }}
+                slectable={true}>
+                {item[itemName]}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      )}
     </Flex>
   );
 };

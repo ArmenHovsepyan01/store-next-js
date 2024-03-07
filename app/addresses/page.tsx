@@ -1,17 +1,11 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import CreateAddressForm from '@/app/addresses/_components/create-address-form/CreateAddressForm';
 import { Flex, Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 
 import styles from '../styles/Mystore.module.scss';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
-import {
-  fetchUserAddresses,
-  setAddresses
-} from '@/app/lib/store/features/addresses/addressesSlice';
-import { log } from 'node:util';
 import Content from '@/app/addresses/_components/content/Content';
 
 const Page = () => {
@@ -47,9 +41,12 @@ const Page = () => {
           selectedKeys={[category]}
         />
       </Sider>
-      <main>
-        <Content category={category} />
-      </main>
+      <Flex
+        style={{ marginLeft: 200, marginTop: 200, width: '100%' }}
+        align={'center'}
+        justify={'center'}>
+        <Content category={category} setCategory={setCategory} />
+      </Flex>
     </Flex>
   );
 };
