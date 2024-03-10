@@ -1,26 +1,19 @@
-import React, { FC, useState } from 'react';
-import { Button, Checkbox, message, Space } from 'antd';
+import React from 'react';
+import { Button, message, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 import {
   deleteCategory,
-  setCategory
 } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-interface IExtraIcons {
-  id: number;
-}
-
-const ExtraIcons: FC<IExtraIcons> = ({ id }) => {
+const DeleteCategory = () => {
   const selectedCategory = useAppSelector((state) => state.productCategories.selected);
 
   const dispatch = useAppDispatch();
 
-  const removeCategory = async (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.stopPropagation();
-
+  const removeCategory = async (id: number) => {
     try {
       const { data } = await axios.delete(`api/categories/${id}`, {
         headers: {
@@ -40,22 +33,13 @@ const ExtraIcons: FC<IExtraIcons> = ({ id }) => {
     }
   };
 
-  const chooseCategory = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.stopPropagation();
-
-    dispatch(
-      setCategory({
-        id
-      })
-    );
-  };
-
   return (
-    <Space size={'middle'}>
-      <Button icon={<DeleteOutlined />} onClick={removeCategory} />
-      <Checkbox checked={id === selectedCategory} onClick={chooseCategory} />
-    </Space>
+    <Tooltip placement={'bottom'} title={'Delete chosen category.'}>
+      <Button icon={<DeleteOutlined />} onClick={async () => {
+        if(selectedCategory) await removeCategory(selectedCategory);
+      }} disabled={!selectedCategory} danger={true} type={'primary'} />
+    </Tooltip>
   );
 };
 
-export default ExtraIcons;
+export default DeleteCategory;

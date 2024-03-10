@@ -107,6 +107,7 @@ const productCategoriesSlice = createSlice({
         JSON.parse(JSON.stringify(state.categories)),
         action.payload.id
       );
+
       state.selected = null;
     }
   },
