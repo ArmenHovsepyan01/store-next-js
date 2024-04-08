@@ -22,6 +22,7 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
 
   function createParams(): string {
     let params = '';
+
     if (searchParams) {
       const keys = Object.keys(searchParams);
 
