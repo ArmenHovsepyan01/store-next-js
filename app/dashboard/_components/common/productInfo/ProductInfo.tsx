@@ -1,6 +1,6 @@
-import React, { FC, ReactNode, useCallback, useState } from 'react';
+import React, { FC,  useCallback} from 'react';
 
-import { Button, Checkbox, Collapse, Flex, message, Space, Tag, TreeSelect } from 'antd';
+import { Flex, message, Tag, TreeSelect } from 'antd';
 
 import styles from '@/app/styles/Dashboard.module.scss';
 import axios from 'axios';
@@ -8,13 +8,13 @@ import Cookies from 'js-cookie';
 
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
-import { deleteCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
+import {  setCategory } from '@/app/lib/store/features/product-categories/productCategoriesSlice';
 import { deleteColor } from '@/app/lib/store/features/product-colors/productColorsSlice';
 import { deleteSize } from '@/app/lib/store/features/product-sizes/productSizesSlice';
 
 import CreateItem from '@/app/dashboard/_components/common/productInfo/create-item/CreateItem';
-import { DeleteOutlined } from '@ant-design/icons';
-import ExtraIcons from '@/app/dashboard/_components/content/categories/extra-icons/ExtraIcons';
+import DeleteCategory from '@/app/dashboard/_components/content/categories/delete-category/DeleteCategory';
+import { capitalize } from '@/app/helpers/capitalize';
 
 interface IProductInfo {
   items: any;
@@ -24,6 +24,7 @@ interface IProductInfo {
 
 const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
   const dispatch = useAppDispatch();
+  const selectedCategory = useAppSelector(state => state.productCategories.selected);
 
   const removeItem = useCallback(
     async (id: number, name: string) => {
@@ -57,25 +58,30 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
     [dispatch, title, itemName]
   );
 
-  function generateCollapseItems(data: any) {
+  function generateTreeData(data: any) {
     return data.map((item: any) => ({
-      key: item.id.toString(),
-      label: item.category,
-      extra: <ExtraIcons id={item.id} />,
+      value:  item.id.toString(),
+      title: capitalize(item.category),
       children:
         item?.subcategories?.length > 0 ? (
-          <Collapse
-            items={generateCollapseItems(item.subcategories)}
-            key={item.id}
-            destroyInactivePanel={true}
-          />
+          generateTreeData(item.subcategories)
         ) : null
     }));
   }
 
-  const collapseItems = itemName === 'category' ? generateCollapseItems(items) : null;
+  const getCategoryID = (id: number) => {
+    dispatch(setCategory({
+      id
+    }))
+  };
 
-  console.log(collapseItems);
+  const clearChoice = () => {
+    dispatch(setCategory({
+      id: null
+    }))
+  };
+
+  const treeData = itemName === 'category' ? generateTreeData(items) : null;
 
   return (
     <Flex justify={'center'}>
@@ -86,7 +92,7 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
         </Flex>
         <Flex vertical={true} style={{ height: '100%' }} gap={12}>
           <h3>{title}</h3>
-          {!collapseItems && (
+          {!treeData && (
             <Flex vertical={true} gap={12}>
               {items.length !== 0
                 ? items.map((item: any) => {
@@ -113,7 +119,16 @@ const ProductInfo: FC<IProductInfo> = ({ items, title, itemName }) => {
                 : `${title} list are empty.`}
             </Flex>
           )}
-          <Collapse items={collapseItems} />
+          {treeData && <Flex gap={12}>
+            <TreeSelect size={'middle'} style={{width: '100%'}}
+              value={selectedCategory}
+              treeLine={true} treeData={treeData} allowClear
+              onSelect={(info) => {
+                if (info) getCategoryID(+info);
+              }} onClear={clearChoice}
+              placeholder={'Choose category and create subcategory for it'} />
+            <DeleteCategory />
+          </Flex>}
         </Flex>
       </Flex>
     </Flex>
