@@ -26,6 +26,8 @@ const Cart = () => {
   }, [cartItems]);
 
   const makePayment = async () => {
+    // stripe payment
+
     try {
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY as string);
 
