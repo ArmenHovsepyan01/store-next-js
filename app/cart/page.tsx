@@ -1,14 +1,19 @@
 'use client';
 
 import React, { useEffect, useMemo } from 'react';
-import { Button, Divider, Flex } from 'antd';
-import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
+
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
+import { Button, Divider, Flex } from 'antd';
+import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
+
 import { fetchCartItems } from '@/app/lib/store/features/cart/cartSlice';
-import CartItem from '@/app/cart/_components/cart-item/CartItem';
 import { loadStripe } from '@stripe/stripe-js';
+
+import CartItem from '@/app/cart/_components/cart-item/CartItem';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 const Cart = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
@@ -26,14 +31,22 @@ const Cart = () => {
   }, [cartItems]);
 
   const makePayment = async () => {
-    // stripe payment
-
     try {
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY as string);
+      if (cartItems.length === 0) return;
 
-      const { data } = await axios.post(`http://localhost:5000/api/payment`, {
-        products: cartItems
-      });
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY as string);
+      const token = Cookies.get('token');
+      const { data } = await axios.post(
+        `http://localhost:5000/api/payment`,
+        {
+          products: cartItems
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       stripe?.redirectToCheckout({
         sessionId: data.data.sessionId
@@ -48,8 +61,12 @@ const Cart = () => {
       <Flex justify={'space-between'} align={'center'} style={{ width: '100%' }}>
         <GoBackButton />
         <h1>Cart</h1>
-        <h3>Total: ${total}</h3>
-        <Button onClick={makePayment}>Pay</Button>
+        <Flex gap={12} align={'center'}>
+          <h3>Total: ${total}</h3>
+          <Button onClick={makePayment} disabled={Boolean(cartItems.length === 0)}>
+            Pay
+          </Button>
+        </Flex>
       </Flex>
       <Divider />
       <Flex gap={24} style={{ maxWidth: 888 }} wrap={'wrap'}>

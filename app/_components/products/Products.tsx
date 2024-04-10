@@ -20,6 +20,8 @@ const Products: FC<ProductsProps> = async ({ searchParams }) => {
 
   const productsData = await getAllProducts(createParams(), token?.value);
 
+  console.log(productsData);
+
   function createParams(): string {
     let params = '';
 

@@ -1,11 +1,8 @@
 import React from 'react';
+import PaymentStatus from '@/app/_components/common/payment-status/PaymentStatus';
 
 const Page = () => {
-  return (
-    <div style={{ marginTop: 70 }}>
-      <div>Payment completed</div>
-    </div>
-  );
+  return <PaymentStatus status={'succeeded'} />;
 };
 
 export default Page;
