@@ -18,7 +18,6 @@ import Cookies from 'js-cookie';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { message } from 'antd';
 import axios from 'axios';
-import { decryptActionBoundArgs } from 'next/dist/server/app-render/action-encryption';
 
 interface CustomCardProps {
   product: IProduct;

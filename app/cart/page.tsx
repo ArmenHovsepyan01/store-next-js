@@ -4,19 +4,23 @@ import React, { useEffect, useMemo } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/app/lib/store/hooks';
 
-import { Button, Divider, Flex } from 'antd';
+import { Button, Divider, Flex, message } from 'antd';
 import GoBackButton from '@/app/_components/go-back-button/GoBackButton';
 
 import { fetchCartItems } from '@/app/lib/store/features/cart/cartSlice';
-import { loadStripe } from '@stripe/stripe-js';
 
 import CartItem from '@/app/cart/_components/cart-item/CartItem';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+
+import { orderProducts } from '@/app/helpers/orderProducts';
 
 const Cart = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const address = useAppSelector((state) => state.user.addresses);
+
+  const defaultAddress = useMemo(() => {
+    return address.filter((address) => address.isDefault);
+  }, [address]);
 
   useEffect(() => {
     (async () => {
@@ -30,29 +34,14 @@ const Cart = () => {
     }, 0);
   }, [cartItems]);
 
-  const makePayment = async () => {
+  const createOrder = async () => {
     try {
-      if (cartItems.length === 0) return;
+      if (cartItems.length === 0 || !defaultAddress) return;
 
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY as string);
-      const token = Cookies.get('token');
-      const { data } = await axios.post(
-        `http://localhost:5000/api/payment`,
-        {
-          products: cartItems
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      stripe?.redirectToCheckout({
-        sessionId: data.data.sessionId
-      });
+      await orderProducts();
     } catch (e: any) {
-      throw new Error(e);
+      console.error(e);
+      message.error('Please select your address then make order.');
     }
   };
 
@@ -63,7 +52,7 @@ const Cart = () => {
         <h1>Cart</h1>
         <Flex gap={12} align={'center'}>
           <h3>Total: ${total}</h3>
-          <Button onClick={makePayment} disabled={Boolean(cartItems.length === 0)}>
+          <Button onClick={() => createOrder()} disabled={Boolean(cartItems.length === 0)}>
             Pay
           </Button>
         </Flex>

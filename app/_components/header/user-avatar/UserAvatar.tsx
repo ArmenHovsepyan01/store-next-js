@@ -89,6 +89,16 @@ const UserAvatar = () => {
     },
     {
       key: '5',
+      label: user.loggedIn ? (
+        <Link href={'/orders'} style={{ paddingLeft: 24 }}>
+          Orders
+        </Link>
+      ) : (
+        <></>
+      )
+    },
+    {
+      key: '6',
       icon: user.loggedIn ? <PoweroffOutlined className="icon" /> : <LoginOutlined />,
       label: user.loggedIn ? (
         <Link onClick={logoutUser} href={''}>
